@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 380" width="1200" height="380" role="img" aria-label="RaktSetu: every drop is a bridge to a life">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3D0810"/>
+      <stop offset="0.55" stop-color="#8E1422"/>
+      <stop offset="1" stop-color="#D62839"/>
+    </linearGradient>
+    <linearGradient id="drop" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FF97A1"/>
+      <stop offset="1" stop-color="#D62839"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="380" fill="url(#bg)"/>
+
+  <!-- floating background droplets -->
+  <g fill="#FFC2C8" opacity="0.18">
+    <path d="M90 60 C90 60 70 88 70 102 a20 20 0 0 0 40 0 C110 88 90 60 90 60z">
+      <animateTransform attributeName="transform" type="translate" values="0 0; 0 18; 0 0" dur="5s" repeatCount="indefinite"/>
+    </path>
+    <path d="M1090 270 C1090 270 1066 304 1066 322 a24 24 0 0 0 48 0 C1114 304 1090 270 1090 270z">
+      <animateTransform attributeName="transform" type="translate" values="0 0; 0 -20; 0 0" dur="6s" repeatCount="indefinite"/>
+    </path>
+    <path d="M980 50 C980 50 966 70 966 80 a14 14 0 0 0 28 0 C994 70 980 50 980 50z">
+      <animateTransform attributeName="transform" type="translate" values="0 0; 0 14; 0 0" dur="4s" repeatCount="indefinite"/>
+    </path>
+    <path d="M300 300 C300 300 288 318 288 328 a12 12 0 0 0 24 0 C312 318 300 300 300 300z">
+      <animateTransform attributeName="transform" type="translate" values="0 0; 0 -12; 0 0" dur="4.5s" repeatCount="indefinite"/>
+    </path>
+  </g>
+
+  <!-- bridge arch -->
+  <g fill="none" stroke="#FFE0E3" stroke-width="3" opacity="0.5">
+    <path d="M0 330 Q300 210 600 330 T1200 330"/>
+    <path d="M0 350 Q300 240 600 350 T1200 350" opacity="0.5"/>
+  </g>
+  <g stroke="#FFE0E3" stroke-width="2" opacity="0.35">
+    <path d="M150 292v58M300 270v80M450 292v58M750 292v58M900 270v80M1050 292v58"/>
+  </g>
+
+  <!-- logo mark with pulse -->
+  <g transform="translate(120 70)">
+    <circle cx="80" cy="110" r="70" fill="#FF97A1" opacity="0.18">
+      <animate attributeName="r" values="62;86;62" dur="2.4s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.28;0;0.28" dur="2.4s" repeatCount="indefinite"/>
+    </circle>
+    <g filter="url(#glow)">
+      <path d="M80 10 C80 10 22 80 22 122 a58 58 0 0 0 116 0 C138 80 80 10 80 10z" fill="url(#drop)">
+        <animateTransform attributeName="transform" type="scale" additive="sum" values="1;1.04;1" dur="2.4s" repeatCount="indefinite"/>
+      </path>
+    </g>
+    <path d="M44 128 Q80 78 116 128" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round"/>
+    <path d="M56 142v-14M80 142v-24M104 142v-14" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
+  </g>
+
+  <!-- text -->
+  <text x="340" y="165" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="92" font-weight="800" fill="#FFFFFF" letter-spacing="-2">Rakt<tspan fill="#FFC2C8">Setu</tspan></text>
+  <text x="344" y="215" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="30" font-weight="600" fill="#FFE0E3">Every drop is a bridge to a life.</text>
+  <text x="344" y="256" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="20" fill="#FFC2C8">Blood Donor &amp; Emergency Request Matcher</text>
+
+  <!-- heartbeat line -->
+  <path d="M344 300 H520 l16 -26 l22 52 l20 -40 l12 14 H760" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="520" stroke-dashoffset="520">
+    <animate attributeName="stroke-dashoffset" values="520;0;0;-520" keyTimes="0;0.45;0.75;1" dur="3.2s" repeatCount="indefinite"/>
+  </path>
+</svg>
