@@ -16,7 +16,7 @@ http.interceptors.request.use((config) => {
  * Server error responses ({ message }) are re-thrown so the UI can toast them.
  */
 export async function call(config, mockFn) {
-  if (!baseURL) return mockFn();
+  if (!baseURL) throw new Error('VITE_API_URL is not set – backend unavailable');
   try {
     const res = await http(config);
     return res.data;

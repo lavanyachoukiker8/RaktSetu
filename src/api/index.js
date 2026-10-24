@@ -6,7 +6,7 @@ import { mock } from '../mock/mockApi';
  */
 export const api = {
   // Auth
-  login: (data) => call({ method: 'post', url: '/api/auth/login', data }, () => mock.login(data)),
+  login: (data) => call({ method: 'post', url: '/api/auth/login', data }, () => (import.meta.env.VITE_API_URL ? null : mock.login(data))),
   registerDonor: (data) => call({ method: 'post', url: '/api/donors/register', data }, () => mock.registerDonor(data)),
   registerHospital: (data) => call({ method: 'post', url: '/api/hospitals/register', data }, () => mock.registerHospital(data)),
 
