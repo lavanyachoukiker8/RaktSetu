@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 
 import pool from './api/db.js';
@@ -1916,6 +1917,32 @@ app.get('/api/audit', verifyToken, requireRole('admin'), async (req, res) => {
     console.error('Audit log error:', err);
     return res.status(500).json({ message: 'Failed to get audit log', error: err.message });
   }
+});
+
+// Serve static frontend build if present
+app.use(express.static(path.join(__dirname, 'dist')));
+
+// Root route
+app.get('/', (req, res) => {
+  const distHtml = path.join(__dirname, 'dist', 'index.html');
+  if (fs.existsSync(distHtml)) {
+    return res.sendFile(distHtml);
+  }
+  res.json({
+    name: 'RaktSetu API Server',
+    status: 'Running',
+    frontend: 'http://localhost:5173',
+    health: '/api/health',
+    endpoints: [
+      '/api/stats',
+      '/api/donors',
+      '/api/requests',
+      '/api/inventory',
+      '/api/camps',
+      '/api/hospitals',
+      '/api/transfers'
+    ]
+  });
 });
 
 // Health check endpoint
