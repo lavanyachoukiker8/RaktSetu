@@ -1,10 +1,9 @@
 // api/index.js
-// Central export for Vercel serverless functions (optional)
-// Each file under /api becomes its own endpoint, so this file is not strictly required.
-// It is kept for future auto‑routing or documentation purposes.
+// Vercel serverless function entrypoint that handles all /api/* requests
+// by delegating directly to the Express app.
 
-export const config = {
-  api: {
-    // Vercel uses zero‑config, keep this placeholder
-  },
-};
+import app from '../server.js';
+
+export default function handler(req, res) {
+  return app(req, res);
+}
