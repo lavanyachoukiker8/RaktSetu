@@ -1,93 +1,57 @@
 // api/hospitals.js
-// Serverless functions for hospital operations (profile, inventory, status)
+// Hospital API endpoints handler
 import pool from './db.js';
-import { verifyToken, requireRole } from './middleware/auth.js';
-import { paginationSchema } from './utils/validation.js';
-import { z } from 'zod';
+import bcrypt from 'bcrypt';
 
-const asyncHandler = fn => async (req, res) => {
+export default async function handler(req, res) {
   try {
-    await fn(req, res);
-  } catch (e) {
-    console.error('Hospital handler error:', e);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-};
+    const { method, query, body } = req;
+    const action = query.action;
 
-// GET /api/hospitals/:id – retrieve hospital profile (self or admin)
-export const getHospital = asyncHandler(async (req, res) => {
-  await verifyToken(req, res, async () => {
-    const hospitalId = req.query.id;
-    if (!hospitalId) return res.status(400).json({ message: 'Missing hospital id' });
-    // Allow admin or the hospital itself (user role hospital and linked id)
-    if (req.user.role !== 'admin' && req.user.role !== 'hospital') {
-      return res.status(403).json({ message: 'Forbidden' });
-    }
-    const [rows] = await pool.execute('SELECT * FROM hospitals WHERE id = ?', [hospitalId]);
-    if (!rows.length) return res.status(404).json({ message: 'Hospital not found' });
-    res.status(200).json(rows[0]);
-  });
-});
-
-// PUT /api/hospitals/:id/status – update hospital status (admin only)
-export const setHospitalStatus = asyncHandler(async (req, res) => {
-  await verifyToken(req, res, async () => {
-    requireRole('admin')(req, res, async () => {
-      const hospitalId = req.query.id;
-      const { status } = req.body;
-      const statusEnum = z.enum(['PENDING', 'APPROVED', 'REJECTED']).safeParse(status);
-      if (!hospitalId || !statusEnum.success) {
-        return res.status(400).json({ message: 'Invalid hospital id or status' });
+    // POST /api/hospitals/register
+    if (method === 'POST' && (action === 'register' || req.url?.includes('register'))) {
+      const { name, license, city, address, phone, email, contactPerson, password } = body;
+      if (!name || !license || !city || !address || !phone || !email || !contactPerson || !password) {
+        return res.status(400).json({ message: 'All fields are required' });
       }
-      await pool.execute('UPDATE hospitals SET status = ? WHERE id = ?', [status, hospitalId]);
-      res.status(200).json({ message: 'Status updated' });
-    });
-  });
-});
 
-// GET /api/hospitals/:id/inventory – list blood unit counts per group (available only)
-export const getInventory = asyncHandler(async (req, res) => {
-  await verifyToken(req, res, async () => {
-    const hospitalId = req.query.id;
-    if (!hospitalId) return res.status(400).json({ message: 'Missing hospital id' });
-    const [rows] = await pool.execute(
-      `SELECT blood_group, COUNT(*) AS available_units
-       FROM units
-       WHERE hospital_id = ? AND status = 'AVAILABLE'
-       GROUP BY blood_group`,
-      [hospitalId]
-    );
-    res.status(200).json(rows);
-  });
-});
+      const hospitalId = `hosp-${crypto.randomUUID().slice(0, 8)}`;
+      const passwordHash = await bcrypt.hash(password, 10);
 
-// PUT /api/hospitals/:id/threshold – set low‑stock threshold per blood group (admin or hospital)
-export const setThreshold = asyncHandler(async (req, res) => {
-  await verifyToken(req, res, async () => {
-    const hospitalId = req.query.id;
-    const { bloodGroup, threshold } = req.body;
-    const schema = z.object({
-      bloodGroup: z.string().regex(/^(A|B|AB|O)[+-]$/),
-      threshold: z.number().int().min(1).max(100)
-    }).safeParse({ bloodGroup, threshold });
-    if (!hospitalId || !schema.success) {
-      return res.status(400).json({ message: 'Invalid data' });
+      const [roles] = await pool.execute("SELECT id FROM roles WHERE name = 'hospital'");
+      const roleId = roles[0].id;
+
+      await pool.execute(
+        `INSERT INTO hospitals (id, name, city, address, status, license, phone, email, contact_person, created_at)
+         VALUES (?, ?, ?, ?, 'PENDING', ?, ?, ?, ?, NOW())`,
+        [hospitalId, name, city, address, license, phone, email, contactPerson]
+      );
+
+      await pool.execute(
+        `INSERT INTO users (username, email, phone, password_hash, role_id, hospital_id, created_at)
+         VALUES (?, ?, ?, ?, ?, ?, NOW())`,
+        [email, email, phone, passwordHash, roleId, hospitalId]
+      );
+
+      return res.status(201).json({ ok: true, id: hospitalId });
     }
-    await pool.execute(
-      `INSERT INTO inventory_thresholds (hospital_id, blood_group, threshold)
-       VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE threshold = VALUES(threshold)`,
-      [hospitalId, bloodGroup, threshold]
-    );
-    res.status(200).json({ message: 'Threshold set' });
-  });
-});
 
-// Export handler based on query action
-export default async (req, res) => {
-  const action = req.query.action;
-  if (action === 'profile') return getHospital(req, res);
-  if (action === 'status') return setHospitalStatus(req, res);
-  if (action === 'inventory') return getInventory(req, res);
-  if (action === 'threshold') return setThreshold(req, res);
-  res.status(404).json({ message: 'Hospital action not found' });
-};
+    // GET /api/hospitals
+    if (method === 'GET') {
+      const { status, city } = query;
+      let sql = 'SELECT * FROM hospitals WHERE 1=1';
+      const params = [];
+      if (status) { sql += ' AND status = ?'; params.push(status); }
+      if (city) { sql += ' AND city = ?'; params.push(city); }
+      sql += ' ORDER BY created_at DESC';
+
+      const [rows] = await pool.execute(sql, params);
+      return res.json(rows);
+    }
+
+    return res.status(404).json({ message: 'Not found' });
+  } catch (err) {
+    console.error('Hospitals handler error:', err);
+    return res.status(500).json({ message: 'Server error', error: err.message });
+  }
+}

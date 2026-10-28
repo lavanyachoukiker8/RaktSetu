@@ -1,37 +1,53 @@
 // api/camps.js
-// Vercel serverless function handling Camp CRUD (list & create)
-
+// Camps API endpoints handler
 import pool from './db.js';
-import { validate, campCreateSchema } from './utils/validation.js';
 
 export default async function handler(req, res) {
   try {
-    if (req.method === 'GET') {
-      // List all camps
-      const [rows] = await pool.query('SELECT * FROM camps');
-      res.status(200).json(rows);
-      return;
+    const { method, query, body } = req;
+
+    if (method === 'GET') {
+      const { city, from } = query;
+      let sql = `SELECT c.*, h.name AS organizer_name, COUNT(cr.id) AS registration_count
+                 FROM camps c
+                 LEFT JOIN hospitals h ON c.organizer_hospital_id = h.id
+                 LEFT JOIN camp_registrations cr ON c.id = cr.camp_id
+                 WHERE 1=1`;
+      const params = [];
+
+      if (city) { sql += ' AND c.city = ?'; params.push(city); }
+      if (from) { sql += ' AND c.date >= ?'; params.push(new Date(from)); }
+      sql += ' GROUP BY c.id ORDER BY c.date ASC';
+
+      const [rows] = await pool.execute(sql, params);
+      const result = rows.map((c) => ({
+        id: c.id,
+        name: c.name,
+        organizer: c.organizer_name || 'RaktSetu Community',
+        city: c.city,
+        venue: c.address,
+        date: c.date,
+        targetUnits: c.target_units,
+        unitsCollected: c.collected_units,
+        registrationCount: Number(c.registration_count || 0),
+      }));
+      return res.json(result);
     }
 
-    if (req.method === 'POST') {
-      // Create a new camp
-      const data = req.body;
-      const validated = validate(campCreateSchema, data);
-      const { name, locationId, startDate, endDate, capacity } = validated;
-      const [result] = await pool.execute(
-        'INSERT INTO camps (name, location_id, start_date, end_date, capacity) VALUES (?,?,?,?,?)',
-        [name, locationId, startDate, endDate, capacity]
+    if (method === 'POST') {
+      const { name, city, venue, date, unitsCollected } = body;
+      const campId = `camp-${crypto.randomUUID().slice(0, 8)}`;
+      await pool.execute(
+        `INSERT INTO camps (id, name, city, date, address, collected_units, created_at)
+         VALUES (?, ?, ?, ?, ?, ?, NOW())`,
+        [campId, name, city, new Date(date), venue || city, Number(unitsCollected || 0)]
       );
-      res.status(201).json({ id: result.insertId });
-      return;
+      return res.status(201).json({ id: campId, name, city, venue, date });
     }
 
-    // Method not allowed
-    res.setHeader('Allow', ['GET', 'POST']);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
+    return res.status(405).json({ message: 'Method not allowed' });
   } catch (err) {
-    const status = err.status || 500;
-    const message = err.message || 'Server error';
-    res.status(status).json({ message });
+    console.error('Camps handler error:', err);
+    return res.status(500).json({ message: 'Server error', error: err.message });
   }
 }

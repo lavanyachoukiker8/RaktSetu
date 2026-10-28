@@ -1,85 +1,62 @@
 // api/transfers.js
-// Serverless functions for inter‑hospital blood unit transfers
+// Inter-hospital stock transfers handler
 import pool from './db.js';
-import { verifyToken, requireRole } from './middleware/auth.js';
-import { transferCreateSchema, paginationSchema } from './utils/validation.js';
-import { v4 as uuidv4 } from 'uuid';
-import { z } from 'zod';
 
-const asyncHandler = fn => async (req, res) => {
+export default async function handler(req, res) {
   try {
-    await fn(req, res);
-  } catch (e) {
-    console.error('Transfers handler error:', e);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-};
+    const { method, query, body } = req;
 
-// POST /api/transfers – create a transfer (admin or hospital)
-export const createTransfer = asyncHandler(async (req, res) => {
-  await verifyToken(req, res, async () => {
-    // Hospital can create a transfer for its own stock, admin any
-    const allowedRoles = req.user.role === 'admin' ? ['admin'] : ['hospital'];
-    requireRole(...allowedRoles)(req, res, async () => {
-      const parsed = transferCreateSchema.safeParse(req.body);
-      if (!parsed.success) return res.status(400).json({ message: 'Invalid payload', errors: parsed.error.errors });
-      const { fromHospitalId, toHospitalId, bloodGroup, units } = parsed.data;
-      // Simple validation: ensure enough AVAILABLE units exist at source
-      const [availRows] = await pool.execute(
-        `SELECT id FROM units WHERE hospital_id = ? AND blood_group = ? AND status = 'AVAILABLE' LIMIT ?`,
-        [fromHospitalId, bloodGroup, units]
-      );
-      if (availRows.length < units) return res.status(400).json({ message: 'Not enough units available at source' });
-
-      const conn = await pool.getConnection();
-      try {
-        await conn.beginTransaction();
-        // Reserve each unit and create transfer record per unit
-        for (let i = 0; i < units; i++) {
-          const unit = availRows[i];
-          await conn.execute('UPDATE units SET status = ? WHERE id = ?', ['RESERVED', unit.id]);
-          const transferId = uuidv4();
-          await conn.execute(
-            `INSERT INTO transfers (id, source_hospital_id, dest_hospital_id, unit_id, status, requested_at)
-             VALUES (?, ?, ?, ?, 'REQUESTED', NOW())`,
-            [transferId, fromHospitalId, toHospitalId, unit.id]
-          );
-        }
-        await conn.commit();
-        res.status(201).json({ message: 'Transfer created', unitsTransferred: units });
-      } catch (e) {
-        await conn.rollback();
-        throw e;
-      } finally {
-        conn.release();
+    if (method === 'GET') {
+      const { hospitalId } = query;
+      let sql = `SELECT t.id, t.source_hospital_id AS fromHospitalId, h1.name AS fromName,
+                        t.dest_hospital_id AS toHospitalId, h2.name AS toName,
+                        u.blood_group AS \`group\`, 1 AS units, t.status, t.requested_at AS at, t.notes
+                 FROM transfers t
+                 LEFT JOIN hospitals h1 ON t.source_hospital_id = h1.id
+                 LEFT JOIN hospitals h2 ON t.dest_hospital_id = h2.id
+                 LEFT JOIN units u ON t.unit_id = u.id
+                 WHERE 1=1`;
+      const params = [];
+      if (hospitalId) {
+        sql += ' AND (t.source_hospital_id = ? OR t.dest_hospital_id = ?)';
+        params.push(hospitalId, hospitalId);
       }
-    });
-  });
-});
+      sql += ' ORDER BY t.requested_at DESC';
 
-// GET /api/transfers – list transfers (admin sees all, hospital sees related)
-export const listTransfers = asyncHandler(async (req, res) => {
-  await verifyToken(req, res, async () => {
-    const parsed = paginationSchema.safeParse(req.query);
-    const page = parsed.success && parsed.data.page ? parseInt(parsed.data.page) : 1;
-    const limit = parsed.success && parsed.data.limit ? parseInt(parsed.data.limit) : 20;
-    const offset = (page - 1) * limit;
-    let sql = 'SELECT * FROM transfers';
-    const params = [];
-    if (req.user.role === 'hospital') {
-      sql += ' WHERE source_hospital_id = ? OR dest_hospital_id = ?';
-      params.push(req.user.id, req.user.id);
+      const [rows] = await pool.execute(sql, params);
+      return res.json(rows);
     }
-    sql += ' ORDER BY requested_at DESC LIMIT ? OFFSET ?';
-    params.push(limit, offset);
-    const [rows] = await pool.execute(sql, params);
-    res.status(200).json({ page, limit, transfers: rows });
-  });
-});
 
-export default async (req, res) => {
-  const action = req.query.action;
-  if (action === 'create') return createTransfer(req, res);
-  if (action === 'list') return listTransfers(req, res);
-  res.status(404).json({ message: 'Transfer action not found' });
-};
+    if (method === 'POST') {
+      const { fromHospitalId, toHospitalId, group, units, notes } = body;
+      const [availableUnits] = await pool.execute(
+        `SELECT id FROM units
+         WHERE hospital_id = ? AND blood_group = ? AND status = 'AVAILABLE' AND expiry > NOW()
+         LIMIT 1`,
+        [fromHospitalId, group]
+      );
+
+      if (!availableUnits.length) {
+        return res.status(400).json({ message: 'No available units to transfer' });
+      }
+
+      const unitId = availableUnits[0].id;
+      const transferId = `tf-${crypto.randomUUID().slice(0, 8)}`;
+
+      await pool.execute(
+        `INSERT INTO transfers (id, source_hospital_id, dest_hospital_id, unit_id, status, requested_at, completed_at, notes)
+         VALUES (?, ?, ?, ?, 'COMPLETED', NOW(), NOW(), ?)`,
+        [transferId, fromHospitalId, toHospitalId, unitId, notes || 'Direct transfer']
+      );
+
+      await pool.execute('UPDATE units SET hospital_id = ? WHERE id = ?', [toHospitalId, unitId]);
+
+      return res.status(201).json({ id: transferId, status: 'COMPLETED' });
+    }
+
+    return res.status(405).json({ message: 'Method not allowed' });
+  } catch (err) {
+    console.error('Transfers handler error:', err);
+    return res.status(500).json({ message: 'Server error', error: err.message });
+  }
+}
