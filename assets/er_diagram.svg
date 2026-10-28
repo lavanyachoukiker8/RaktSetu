@@ -1,6 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1150" width="100%" height="100%" style="background:#0b0f19; font-family:'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1150" width="1600" height="1150" style="background:#0b0f19;">
   <defs>
-    <!-- Gradients -->
     <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#D62839"/>
       <stop offset="100%" stop-color="#8E1422"/>
@@ -25,74 +24,53 @@
       <stop offset="0%" stop-color="#4c1d95"/>
       <stop offset="100%" stop-color="#6d28d9"/>
     </linearGradient>
-
-    <!-- Filters -->
-    <filter id="shadow" x="-5%" y="-5%" width="110%" height="115%" filterUnits="userSpaceOnUse">
-      <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#000" flood-opacity="0.6"/>
-    </filter>
   </defs>
 
-  <style>
-    .title { font-size: 26px; font-weight: 800; fill: #ffffff; letter-spacing: 0.5px; }
-    .subtitle { font-size: 14px; fill: #94a3b8; }
-    .table-hdr { font-size: 13px; font-weight: 700; fill: #ffffff; letter-spacing: 0.3px; }
-    .table-tag { font-size: 10px; font-weight: 600; fill: #cbd5e1; opacity: 0.8; }
-    .col-pk { font-size: 11px; font-weight: 700; fill: #fbbf24; }
-    .col-fk { font-size: 11px; font-weight: 600; fill: #38bdf8; }
-    .col-reg { font-size: 11px; fill: #e2e8f0; }
-    .col-type { font-size: 10px; fill: #64748b; font-family: 'Consolas', monospace; text-anchor: end; }
-    .card-border { stroke: #334155; stroke-width: 1.5; rx: 8px; }
-    .rel-line { fill: none; stroke-width: 1.5; stroke-dasharray: 4,4; }
-    .rel-direct { fill: none; stroke-width: 2; }
-    .badge { rx: 4px; }
-  </style>
-
   <!-- Title Banner -->
-  <rect x="40" y="25" width="1520" height="75" rx="10" fill="url(#headerGrad)" filter="url(#shadow)"/>
-  <text x="70" y="60" class="title">🩸 RaktSetu — Entity Relationship (ER) Diagram (MySQL 8.0 Relational Architecture)</text>
-  <text x="70" y="83" class="subtitle">Course: CS203 DBMS | SVNIT Surat · 16 Normalized Tables (3NF/BCNF) · 6 Triggers · 2 Procedures · 3 Views</text>
+  <rect x="40" y="25" width="1520" height="75" rx="10" fill="url(#headerGrad)"/>
+  <text x="70" y="60" fill="#ffffff" font-size="24px" font-weight="800" font-family="Arial, sans-serif">RaktSetu - Relational Entity-Relationship (ER) Architecture (MySQL 8.0)</text>
+  <text x="70" y="83" fill="#cbd5e1" font-size="13px" font-family="Arial, sans-serif">Course: CS203 DBMS | SVNIT Surat - 16 Normalized Tables (3NF/BCNF), 6 Triggers, 2 Procedures, 3 Views</text>
   <rect x="1350" y="42" width="180" height="38" rx="6" fill="#000000" opacity="0.35"/>
-  <text x="1440" y="66" text-anchor="middle" fill="#f87171" font-size="12px" font-weight="700">Aiven Cloud MySQL</text>
+  <text x="1440" y="66" text-anchor="middle" fill="#fca5a5" font-size="12px" font-weight="700" font-family="Arial, sans-serif">Aiven Cloud MySQL</text>
 
   <!-- ============================================================== -->
-  <!-- 1. LOOKUP / REFERENCE TABLES (Top Left) -->
+  <!-- 1. LOOKUP / REFERENCE TABLES -->
   <!-- ============================================================== -->
 
   <!-- BLOOD_GROUPS -->
-  <g transform="translate(40, 130)" filter="url(#shadow)">
-    <rect width="220" height="130" fill="url(#cardGrad)" class="card-border"/>
+  <g transform="translate(40, 130)">
+    <rect width="220" height="130" rx="8" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.5"/>
     <rect width="220" height="32" rx="8" fill="url(#lookupGrad)"/>
-    <text x="12" y="21" class="table-hdr">blood_groups</text>
-    <text x="208" y="21" class="table-tag" text-anchor="end">LOOKUP</text>
-    <!-- cols -->
-    <text x="12" y="55" class="col-pk">🔑 code</text><text x="208" y="55" class="col-type">VARCHAR(3)</text>
-    <text x="12" y="77" class="col-reg">description</text><text x="208" y="77" class="col-type">VARCHAR(25)</text>
-    <text x="12" y="99" class="col-reg">is_rare</text><text x="208" y="99" class="col-type">BOOLEAN</text>
-    <text x="12" y="119" fill="#10b981" font-size="9px">● 8 Master Blood Groups</text>
+    <text x="12" y="21" fill="#ffffff" font-size="13px" font-weight="700" font-family="Arial, sans-serif">blood_groups</text>
+    <text x="208" y="21" fill="#cbd5e1" font-size="10px" font-weight="600" text-anchor="end" font-family="Arial, sans-serif">LOOKUP</text>
+    <text x="12" y="55" fill="#fbbf24" font-size="11px" font-weight="700" font-family="Arial, sans-serif">[PK] code</text><text x="208" y="55" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(3)</text>
+    <text x="12" y="77" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">description</text><text x="208" y="77" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(25)</text>
+    <text x="12" y="99" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">is_rare</text><text x="208" y="99" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">BOOLEAN</text>
+    <text x="12" y="119" fill="#10b981" font-size="9px" font-family="Arial, sans-serif">8 Master Blood Groups</text>
   </g>
 
   <!-- CITIES -->
-  <g transform="translate(40, 290)" filter="url(#shadow)">
-    <rect width="220" height="150" fill="url(#cardGrad)" class="card-border"/>
+  <g transform="translate(40, 290)">
+    <rect width="220" height="150" rx="8" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.5"/>
     <rect width="220" height="32" rx="8" fill="url(#lookupGrad)"/>
-    <text x="12" y="21" class="table-hdr">cities</text>
-    <text x="208" y="21" class="table-tag" text-anchor="end">LOOKUP</text>
-    <text x="12" y="55" class="col-pk">🔑 name</text><text x="208" y="55" class="col-type">VARCHAR(50)</text>
-    <text x="12" y="77" class="col-reg">state</text><text x="208" y="77" class="col-type">VARCHAR(50)</text>
-    <text x="12" y="99" class="col-reg">latitude</text><text x="208" y="99" class="col-type">DECIMAL(9,6)</text>
-    <text x="12" y="121" class="col-reg">longitude</text><text x="208" y="121" class="col-type">DECIMAL(9,6)</text>
-    <text x="12" y="140" fill="#10b981" font-size="9px">● Geo-Coordinates for Matching</text>
+    <text x="12" y="21" fill="#ffffff" font-size="13px" font-weight="700" font-family="Arial, sans-serif">cities</text>
+    <text x="208" y="21" fill="#cbd5e1" font-size="10px" font-weight="600" text-anchor="end" font-family="Arial, sans-serif">LOOKUP</text>
+    <text x="12" y="55" fill="#fbbf24" font-size="11px" font-weight="700" font-family="Arial, sans-serif">[PK] name</text><text x="208" y="55" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(50)</text>
+    <text x="12" y="77" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">state</text><text x="208" y="77" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(50)</text>
+    <text x="12" y="99" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">latitude</text><text x="208" y="99" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">DECIMAL(9,6)</text>
+    <text x="12" y="121" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">longitude</text><text x="208" y="121" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">DECIMAL(9,6)</text>
+    <text x="12" y="140" fill="#10b981" font-size="9px" font-family="Arial, sans-serif">Geo-Coordinates for Proximity</text>
   </g>
 
   <!-- ROLES -->
-  <g transform="translate(40, 470)" filter="url(#shadow)">
-    <rect width="220" height="110" fill="url(#cardGrad)" class="card-border"/>
+  <g transform="translate(40, 470)">
+    <rect width="220" height="110" rx="8" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.5"/>
     <rect width="220" height="32" rx="8" fill="url(#lookupGrad)"/>
-    <text x="12" y="21" class="table-hdr">roles</text>
-    <text x="208" y="21" class="table-tag" text-anchor="end">LOOKUP</text>
-    <text x="12" y="55" class="col-pk">🔑 id</text><text x="208" y="55" class="col-type">TINYINT</text>
-    <text x="12" y="77" class="col-reg">name</text><text x="208" y="77" class="col-type">ENUM</text>
-    <text x="12" y="98" fill="#10b981" font-size="9px">● admin, donor, hospital</text>
+    <text x="12" y="21" fill="#ffffff" font-size="13px" font-weight="700" font-family="Arial, sans-serif">roles</text>
+    <text x="208" y="21" fill="#cbd5e1" font-size="10px" font-weight="600" text-anchor="end" font-family="Arial, sans-serif">LOOKUP</text>
+    <text x="12" y="55" fill="#fbbf24" font-size="11px" font-weight="700" font-family="Arial, sans-serif">[PK] id</text><text x="208" y="55" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">TINYINT</text>
+    <text x="12" y="77" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">name</text><text x="208" y="77" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">ENUM</text>
+    <text x="12" y="98" fill="#10b981" font-size="9px" font-family="Arial, sans-serif">admin, donor, hospital</text>
   </g>
 
   <!-- ============================================================== -->
@@ -100,59 +78,59 @@
   <!-- ============================================================== -->
 
   <!-- USERS -->
-  <g transform="translate(320, 130)" filter="url(#shadow)">
-    <rect width="260" height="230" fill="url(#cardGrad)" class="card-border" stroke="#e11d48"/>
+  <g transform="translate(320, 130)">
+    <rect width="260" height="230" rx="8" fill="url(#cardGrad)" stroke="#e11d48" stroke-width="1.5"/>
     <rect width="260" height="32" rx="8" fill="url(#primaryGrad)"/>
-    <text x="12" y="21" class="table-hdr">users</text>
-    <text x="248" y="21" class="table-tag" text-anchor="end">AUTH ENTITY</text>
-    <text x="12" y="55" class="col-pk">🔑 id</text><text x="248" y="55" class="col-type">BIGINT AUTO</text>
-    <text x="12" y="77" class="col-reg">username</text><text x="248" y="77" class="col-type">VARCHAR(100) UQ</text>
-    <text x="12" y="99" class="col-reg">email</text><text x="248" y="99" class="col-type">VARCHAR(150) UQ</text>
-    <text x="12" y="121" class="col-reg">phone</text><text x="248" y="121" class="col-type">CHAR(10) UQ</text>
-    <text x="12" y="143" class="col-reg">password_hash</text><text x="248" y="143" class="col-type">VARCHAR(255)</text>
-    <text x="12" y="165" class="col-fk">🔗 role_id</text><text x="248" y="165" class="col-type">TINYINT (FK)</text>
-    <text x="12" y="187" class="col-fk">🔗 donor_id</text><text x="248" y="187" class="col-type">VARCHAR(36) (FK)</text>
-    <text x="12" y="209" class="col-fk">🔗 hospital_id</text><text x="248" y="209" class="col-type">VARCHAR(36) (FK)</text>
+    <text x="12" y="21" fill="#ffffff" font-size="13px" font-weight="700" font-family="Arial, sans-serif">users</text>
+    <text x="248" y="21" fill="#cbd5e1" font-size="10px" font-weight="600" text-anchor="end" font-family="Arial, sans-serif">AUTH ENTITY</text>
+    <text x="12" y="55" fill="#fbbf24" font-size="11px" font-weight="700" font-family="Arial, sans-serif">[PK] id</text><text x="248" y="55" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">BIGINT AUTO</text>
+    <text x="12" y="77" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">username</text><text x="248" y="77" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(100) UQ</text>
+    <text x="12" y="99" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">email</text><text x="248" y="99" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(150) UQ</text>
+    <text x="12" y="121" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">phone</text><text x="248" y="121" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">CHAR(10) UQ</text>
+    <text x="12" y="143" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">password_hash</text><text x="248" y="143" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(255)</text>
+    <text x="12" y="165" fill="#38bdf8" font-size="11px" font-weight="600" font-family="Arial, sans-serif">[FK] role_id</text><text x="248" y="165" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">TINYINT (FK)</text>
+    <text x="12" y="187" fill="#38bdf8" font-size="11px" font-weight="600" font-family="Arial, sans-serif">[FK] donor_id</text><text x="248" y="187" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(36) (FK)</text>
+    <text x="12" y="209" fill="#38bdf8" font-size="11px" font-weight="600" font-family="Arial, sans-serif">[FK] hospital_id</text><text x="248" y="209" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(36) (FK)</text>
   </g>
 
   <!-- DONORS -->
-  <g transform="translate(320, 400)" filter="url(#shadow)">
-    <rect width="260" height="360" fill="url(#cardGrad)" class="card-border" stroke="#e11d48"/>
+  <g transform="translate(320, 400)">
+    <rect width="260" height="360" rx="8" fill="url(#cardGrad)" stroke="#e11d48" stroke-width="1.5"/>
     <rect width="260" height="32" rx="8" fill="url(#primaryGrad)"/>
-    <text x="12" y="21" class="table-hdr">donors</text>
-    <text x="248" y="21" class="table-tag" text-anchor="end">PRIMARY ENTITY</text>
-    <text x="12" y="55" class="col-pk">🔑 id</text><text x="248" y="55" class="col-type">VARCHAR(36)</text>
-    <text x="12" y="77" class="col-reg">name</text><text x="248" y="77" class="col-type">VARCHAR(150)</text>
-    <text x="12" y="99" class="col-reg">gender</text><text x="248" y="99" class="col-type">ENUM('M','F','O')</text>
-    <text x="12" y="121" class="col-reg">dob (18-65 yr check)</text><text x="248" y="121" class="col-type">DATE</text>
-    <text x="12" y="143" class="col-reg">phone (10-digit)</text><text x="248" y="143" class="col-type">CHAR(10) UQ</text>
-    <text x="12" y="165" class="col-reg">email</text><text x="248" y="165" class="col-type">VARCHAR(150)</text>
-    <text x="12" y="187" class="col-fk">🔗 blood_group</text><text x="248" y="187" class="col-type">VARCHAR(3) (FK)</text>
-    <text x="12" y="209" class="col-fk">🔗 city</text><text x="248" y="209" class="col-type">VARCHAR(50) (FK)</text>
-    <text x="12" y="231" class="col-reg">area, pincode</text><text x="248" y="231" class="col-type">VARCHAR</text>
-    <text x="12" y="253" class="col-reg">weight_kg (>=45kg)</text><text x="248" y="253" class="col-type">DECIMAL(5,2)</text>
-    <text x="12" y="275" class="col-reg">available, active</text><text x="248" y="275" class="col-type">BOOLEAN</text>
-    <text x="12" y="297" class="col-reg">last_donation</text><text x="248" y="297" class="col-type">DATETIME</text>
-    <text x="12" y="319" class="col-reg">next_eligible_date</text><text x="248" y="319" class="col-type">DATE</text>
-    <text x="12" y="341" class="col-reg">donation_count</text><text x="248" y="341" class="col-type">INT UNSIGNED</text>
+    <text x="12" y="21" fill="#ffffff" font-size="13px" font-weight="700" font-family="Arial, sans-serif">donors</text>
+    <text x="248" y="21" fill="#cbd5e1" font-size="10px" font-weight="600" text-anchor="end" font-family="Arial, sans-serif">PRIMARY ENTITY</text>
+    <text x="12" y="55" fill="#fbbf24" font-size="11px" font-weight="700" font-family="Arial, sans-serif">[PK] id</text><text x="248" y="55" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(36)</text>
+    <text x="12" y="77" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">name</text><text x="248" y="77" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(150)</text>
+    <text x="12" y="99" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">gender</text><text x="248" y="99" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">ENUM('M','F','O')</text>
+    <text x="12" y="121" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">dob (18-65 yr check)</text><text x="248" y="121" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">DATE</text>
+    <text x="12" y="143" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">phone (10-digit)</text><text x="248" y="143" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">CHAR(10) UQ</text>
+    <text x="12" y="165" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">email</text><text x="248" y="165" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(150)</text>
+    <text x="12" y="187" fill="#38bdf8" font-size="11px" font-weight="600" font-family="Arial, sans-serif">[FK] blood_group</text><text x="248" y="187" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(3) (FK)</text>
+    <text x="12" y="209" fill="#38bdf8" font-size="11px" font-weight="600" font-family="Arial, sans-serif">[FK] city</text><text x="248" y="209" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(50) (FK)</text>
+    <text x="12" y="231" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">area, pincode</text><text x="248" y="231" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR</text>
+    <text x="12" y="253" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">weight_kg (&gt;=45kg)</text><text x="248" y="253" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">DECIMAL(5,2)</text>
+    <text x="12" y="275" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">available, active</text><text x="248" y="275" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">BOOLEAN</text>
+    <text x="12" y="297" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">last_donation</text><text x="248" y="297" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">DATETIME</text>
+    <text x="12" y="319" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">next_eligible_date</text><text x="248" y="319" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">DATE</text>
+    <text x="12" y="341" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">donation_count</text><text x="248" y="341" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">INT UNSIGNED</text>
   </g>
 
   <!-- HOSPITALS -->
-  <g transform="translate(640, 130)" filter="url(#shadow)">
-    <rect width="270" height="270" fill="url(#cardGrad)" class="card-border" stroke="#e11d48"/>
+  <g transform="translate(640, 130)">
+    <rect width="270" height="270" rx="8" fill="url(#cardGrad)" stroke="#e11d48" stroke-width="1.5"/>
     <rect width="270" height="32" rx="8" fill="url(#primaryGrad)"/>
-    <text x="12" y="21" class="table-hdr">hospitals</text>
-    <text x="258" y="21" class="table-tag" text-anchor="end">PRIMARY ENTITY</text>
-    <text x="12" y="55" class="col-pk">🔑 id</text><text x="258" y="55" class="col-type">VARCHAR(36)</text>
-    <text x="12" y="77" class="col-reg">name</text><text x="258" y="77" class="col-type">VARCHAR(200)</text>
-    <text x="12" y="99" class="col-fk">🔗 city</text><text x="258" y="99" class="col-type">VARCHAR(50) (FK)</text>
-    <text x="12" y="121" class="col-reg">address</text><text x="258" y="121" class="col-type">TEXT</text>
-    <text x="12" y="143" class="col-reg">status</text><text x="258" y="143" class="col-type">ENUM(PEND/APPR)</text>
-    <text x="12" y="165" class="col-reg">license</text><text x="258" y="165" class="col-type">VARCHAR(100) UQ</text>
-    <text x="12" y="187" class="col-reg">phone</text><text x="258" y="187" class="col-type">CHAR(10)</text>
-    <text x="12" y="209" class="col-reg">email</text><text x="258" y="209" class="col-type">VARCHAR(150)</text>
-    <text x="12" y="231" class="col-reg">contact_person</text><text x="258" y="231" class="col-type">VARCHAR(150)</text>
-    <text x="12" y="253" class="col-reg">stock_updated_at</text><text x="258" y="253" class="col-type">DATETIME</text>
+    <text x="12" y="21" fill="#ffffff" font-size="13px" font-weight="700" font-family="Arial, sans-serif">hospitals</text>
+    <text x="258" y="21" fill="#cbd5e1" font-size="10px" font-weight="600" text-anchor="end" font-family="Arial, sans-serif">PRIMARY ENTITY</text>
+    <text x="12" y="55" fill="#fbbf24" font-size="11px" font-weight="700" font-family="Arial, sans-serif">[PK] id</text><text x="258" y="55" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(36)</text>
+    <text x="12" y="77" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">name</text><text x="258" y="77" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(200)</text>
+    <text x="12" y="99" fill="#38bdf8" font-size="11px" font-weight="600" font-family="Arial, sans-serif">[FK] city</text><text x="258" y="99" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(50) (FK)</text>
+    <text x="12" y="121" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">address</text><text x="258" y="121" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">TEXT</text>
+    <text x="12" y="143" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">status</text><text x="258" y="143" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">ENUM(PEND/APPR)</text>
+    <text x="12" y="165" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">license</text><text x="258" y="165" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(100) UQ</text>
+    <text x="12" y="187" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">phone</text><text x="258" y="187" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">CHAR(10)</text>
+    <text x="12" y="209" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">email</text><text x="258" y="209" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(150)</text>
+    <text x="12" y="231" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">contact_person</text><text x="258" y="231" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(150)</text>
+    <text x="12" y="253" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">stock_updated_at</text><text x="258" y="253" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">DATETIME</text>
   </g>
 
   <!-- ============================================================== -->
@@ -160,45 +138,45 @@
   <!-- ============================================================== -->
 
   <!-- INVENTORY_THRESHOLDS -->
-  <g transform="translate(640, 430)" filter="url(#shadow)">
-    <rect width="270" height="130" fill="url(#cardGrad)" class="card-border"/>
+  <g transform="translate(640, 430)">
+    <rect width="270" height="130" rx="8" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.5"/>
     <rect width="270" height="32" rx="8" fill="url(#lookupGrad)"/>
-    <text x="12" y="21" class="table-hdr">inventory_thresholds</text>
-    <text x="258" y="21" class="table-tag" text-anchor="end">CONFIG</text>
-    <text x="12" y="55" class="col-pk">🔑🔗 hospital_id</text><text x="258" y="55" class="col-type">VARCHAR(36) (PK,FK)</text>
-    <text x="12" y="77" class="col-pk">🔑🔗 blood_group</text><text x="258" y="77" class="col-type">VARCHAR(3) (PK,FK)</text>
-    <text x="12" y="99" class="col-reg">threshold (0-100)</text><text x="258" y="99" class="col-type">INT UNSIGNED</text>
-    <text x="12" y="120" fill="#f59e0b" font-size="9px">Composite PK: (hospital_id, blood_group)</text>
+    <text x="12" y="21" fill="#ffffff" font-size="13px" font-weight="700" font-family="Arial, sans-serif">inventory_thresholds</text>
+    <text x="258" y="21" fill="#cbd5e1" font-size="10px" font-weight="600" text-anchor="end" font-family="Arial, sans-serif">CONFIG</text>
+    <text x="12" y="55" fill="#fbbf24" font-size="11px" font-weight="700" font-family="Arial, sans-serif">[PK,FK] hospital_id</text><text x="258" y="55" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(36)</text>
+    <text x="12" y="77" fill="#fbbf24" font-size="11px" font-weight="700" font-family="Arial, sans-serif">[PK,FK] blood_group</text><text x="258" y="77" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(3)</text>
+    <text x="12" y="99" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">threshold (0-100)</text><text x="258" y="99" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">INT UNSIGNED</text>
+    <text x="12" y="120" fill="#f59e0b" font-size="9px" font-family="Arial, sans-serif">Composite PK: (hospital_id, blood_group)</text>
   </g>
 
-  <!-- UNITS (Blood Bags) -->
-  <g transform="translate(640, 590)" filter="url(#shadow)">
-    <rect width="270" height="210" fill="url(#cardGrad)" class="card-border" stroke="#3b82f6"/>
+  <!-- UNITS -->
+  <g transform="translate(640, 590)">
+    <rect width="270" height="210" rx="8" fill="url(#cardGrad)" stroke="#3b82f6" stroke-width="1.5"/>
     <rect width="270" height="32" rx="8" fill="url(#junctionGrad)"/>
-    <text x="12" y="21" class="table-hdr">units (blood bags)</text>
-    <text x="258" y="21" class="table-tag" text-anchor="end">BARCODE TRACKER</text>
-    <text x="12" y="55" class="col-pk">🔑 id</text><text x="258" y="55" class="col-type">VARCHAR(36)</text>
-    <text x="12" y="77" class="col-reg">bag_barcode</text><text x="258" y="77" class="col-type">VARCHAR(50) UQ</text>
-    <text x="12" y="99" class="col-fk">🔗 hospital_id</text><text x="258" y="99" class="col-type">VARCHAR(36) (FK)</text>
-    <text x="12" y="121" class="col-fk">🔗 blood_group</text><text x="258" y="121" class="col-type">VARCHAR(3) (FK)</text>
-    <text x="12" y="143" class="col-reg">component</text><text x="258" y="143" class="col-type">ENUM(WHOLE/RBC)</text>
-    <text x="12" y="165" class="col-reg">collected_at</text><text x="258" y="165" class="col-type">DATETIME</text>
-    <text x="12" y="187" class="col-reg">expiry, status</text><text x="258" y="187" class="col-type">DATETIME, ENUM</text>
+    <text x="12" y="21" fill="#ffffff" font-size="13px" font-weight="700" font-family="Arial, sans-serif">units (blood bags)</text>
+    <text x="258" y="21" fill="#cbd5e1" font-size="10px" font-weight="600" text-anchor="end" font-family="Arial, sans-serif">BARCODE TRACKER</text>
+    <text x="12" y="55" fill="#fbbf24" font-size="11px" font-weight="700" font-family="Arial, sans-serif">[PK] id</text><text x="258" y="55" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(36)</text>
+    <text x="12" y="77" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">bag_barcode</text><text x="258" y="77" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(50) UQ</text>
+    <text x="12" y="99" fill="#38bdf8" font-size="11px" font-weight="600" font-family="Arial, sans-serif">[FK] hospital_id</text><text x="258" y="99" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(36) (FK)</text>
+    <text x="12" y="121" fill="#38bdf8" font-size="11px" font-weight="600" font-family="Arial, sans-serif">[FK] blood_group</text><text x="258" y="121" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(3) (FK)</text>
+    <text x="12" y="143" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">component</text><text x="258" y="143" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">ENUM(WHOLE/RBC)</text>
+    <text x="12" y="165" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">collected_at</text><text x="258" y="165" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">DATETIME</text>
+    <text x="12" y="187" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">expiry, status</text><text x="258" y="187" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">DATETIME, ENUM</text>
   </g>
 
   <!-- DONATIONS -->
-  <g transform="translate(640, 830)" filter="url(#shadow)">
-    <rect width="270" height="190" fill="url(#cardGrad)" class="card-border" stroke="#10b981"/>
+  <g transform="translate(640, 830)">
+    <rect width="270" height="190" rx="8" fill="url(#cardGrad)" stroke="#10b981" stroke-width="1.5"/>
     <rect width="270" height="32" rx="8" fill="url(#lookupGrad)"/>
-    <text x="12" y="21" class="table-hdr">donations</text>
-    <text x="258" y="21" class="table-tag" text-anchor="end">CLINICAL LOG</text>
-    <text x="12" y="55" class="col-pk">🔑 id</text><text x="258" y="55" class="col-type">VARCHAR(36)</text>
-    <text x="12" y="77" class="col-fk">🔗 donor_id</text><text x="258" y="77" class="col-type">VARCHAR(36) (FK)</text>
-    <text x="12" y="99" class="col-fk">🔗 hospital_id</text><text x="258" y="99" class="col-type">VARCHAR(36) (FK)</text>
-    <text x="12" y="121" class="col-reg">units (1-5)</text><text x="258" y="121" class="col-type">INT UNSIGNED</text>
-    <text x="12" y="143" class="col-reg">collected_at</text><text x="258" y="143" class="col-type">DATETIME</text>
-    <text x="12" y="165" class="col-reg">status, certificate_id</text><text x="258" y="165" class="col-type">ENUM, VARCHAR</text>
-    <text x="12" y="184" fill="#34d399" font-size="9px">⚡ Triggers Auto Unit & Cooldown</text>
+    <text x="12" y="21" fill="#ffffff" font-size="13px" font-weight="700" font-family="Arial, sans-serif">donations</text>
+    <text x="258" y="21" fill="#cbd5e1" font-size="10px" font-weight="600" text-anchor="end" font-family="Arial, sans-serif">CLINICAL LOG</text>
+    <text x="12" y="55" fill="#fbbf24" font-size="11px" font-weight="700" font-family="Arial, sans-serif">[PK] id</text><text x="258" y="55" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(36)</text>
+    <text x="12" y="77" fill="#38bdf8" font-size="11px" font-weight="600" font-family="Arial, sans-serif">[FK] donor_id</text><text x="258" y="77" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(36) (FK)</text>
+    <text x="12" y="99" fill="#38bdf8" font-size="11px" font-weight="600" font-family="Arial, sans-serif">[FK] hospital_id</text><text x="258" y="99" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(36) (FK)</text>
+    <text x="12" y="121" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">units (1-5)</text><text x="258" y="121" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">INT UNSIGNED</text>
+    <text x="12" y="143" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">collected_at</text><text x="258" y="143" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">DATETIME</text>
+    <text x="12" y="165" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">status, certificate_id</text><text x="258" y="165" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">ENUM, VARCHAR</text>
+    <text x="12" y="184" fill="#34d399" font-size="9px" font-family="Arial, sans-serif">Triggers Auto Unit and Cooldown</text>
   </g>
 
   <!-- ============================================================== -->
@@ -206,153 +184,151 @@
   <!-- ============================================================== -->
 
   <!-- REQUESTS -->
-  <g transform="translate(970, 130)" filter="url(#shadow)">
-    <rect width="280" height="300" fill="url(#cardGrad)" class="card-border" stroke="#f59e0b"/>
+  <g transform="translate(970, 130)">
+    <rect width="280" height="300" rx="8" fill="url(#cardGrad)" stroke="#f59e0b" stroke-width="1.5"/>
     <rect width="280" height="32" rx="8" fill="url(#primaryGrad)"/>
-    <text x="12" y="21" class="table-hdr">requests (emergency)</text>
-    <text x="268" y="21" class="table-tag" text-anchor="end">DISPATCH</text>
-    <text x="12" y="55" class="col-pk">🔑 id</text><text x="268" y="55" class="col-type">VARCHAR(36)</text>
-    <text x="12" y="77" class="col-fk">🔗 hospital_id</text><text x="268" y="77" class="col-type">VARCHAR(36) (FK)</text>
-    <text x="12" y="99" class="col-reg">hospital_name</text><text x="268" y="99" class="col-type">VARCHAR(200)</text>
-    <text x="12" y="121" class="col-fk">🔗 city</text><text x="268" y="121" class="col-type">VARCHAR(50) (FK)</text>
-    <text x="12" y="143" class="col-reg">patient_name</text><text x="268" y="143" class="col-type">VARCHAR(150)</text>
-    <text x="12" y="165" class="col-fk">🔗 blood_group</text><text x="268" y="165" class="col-type">VARCHAR(3) (FK)</text>
-    <text x="12" y="187" class="col-reg">units_needed (1-10)</text><text x="268" y="187" class="col-type">INT UNSIGNED</text>
-    <text x="12" y="209" class="col-reg">urgency</text><text x="268" y="209" class="col-type">ENUM('NORM','URG','CRIT')</text>
-    <text x="12" y="231" class="col-reg">status</text><text x="268" y="231" class="col-type">ENUM('OPEN','FULF',..)</text>
-    <text x="12" y="253" class="col-reg">required_by</text><text x="268" y="253" class="col-type">DATETIME</text>
-    <text x="12" y="275" class="col-reg">contact_person, phone</text><text x="268" y="275" class="col-type">VARCHAR, CHAR(10)</text>
-    <text x="12" y="294" fill="#fbbf24" font-size="9px">⚡ sp_match_emergency_donors Target</text>
+    <text x="12" y="21" fill="#ffffff" font-size="13px" font-weight="700" font-family="Arial, sans-serif">requests (emergency)</text>
+    <text x="268" y="21" fill="#cbd5e1" font-size="10px" font-weight="600" text-anchor="end" font-family="Arial, sans-serif">DISPATCH</text>
+    <text x="12" y="55" fill="#fbbf24" font-size="11px" font-weight="700" font-family="Arial, sans-serif">[PK] id</text><text x="268" y="55" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(36)</text>
+    <text x="12" y="77" fill="#38bdf8" font-size="11px" font-weight="600" font-family="Arial, sans-serif">[FK] hospital_id</text><text x="268" y="77" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(36) (FK)</text>
+    <text x="12" y="99" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">hospital_name</text><text x="268" y="99" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(200)</text>
+    <text x="12" y="121" fill="#38bdf8" font-size="11px" font-weight="600" font-family="Arial, sans-serif">[FK] city</text><text x="268" y="121" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(50) (FK)</text>
+    <text x="12" y="143" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">patient_name</text><text x="268" y="143" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(150)</text>
+    <text x="12" y="165" fill="#38bdf8" font-size="11px" font-weight="600" font-family="Arial, sans-serif">[FK] blood_group</text><text x="268" y="165" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(3) (FK)</text>
+    <text x="12" y="187" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">units_needed (1-10)</text><text x="268" y="187" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">INT UNSIGNED</text>
+    <text x="12" y="209" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">urgency</text><text x="268" y="209" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">ENUM('NORM','URG','CRIT')</text>
+    <text x="12" y="231" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">status</text><text x="268" y="231" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">ENUM('OPEN','FULF',..)</text>
+    <text x="12" y="253" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">required_by</text><text x="268" y="253" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">DATETIME</text>
+    <text x="12" y="275" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">contact_person, phone</text><text x="268" y="275" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR, CHAR(10)</text>
+    <text x="12" y="294" fill="#fbbf24" font-size="9px" font-family="Arial, sans-serif">sp_match_emergency_donors Target</text>
   </g>
 
   <!-- REQUEST_NOTIFIED -->
-  <g transform="translate(970, 460)" filter="url(#shadow)">
-    <rect width="280" height="110" fill="url(#cardGrad)" class="card-border"/>
+  <g transform="translate(970, 460)">
+    <rect width="280" height="110" rx="8" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.5"/>
     <rect width="280" height="32" rx="8" fill="url(#junctionGrad)"/>
-    <text x="12" y="21" class="table-hdr">request_notified</text>
-    <text x="268" y="21" class="table-tag" text-anchor="end">JUNCTION</text>
-    <text x="12" y="55" class="col-pk">🔑 id</text><text x="268" y="55" class="col-type">BIGINT AUTO</text>
-    <text x="12" y="77" class="col-fk">🔗 request_id</text><text x="268" y="77" class="col-type">VARCHAR(36) (FK)</text>
-    <text x="12" y="99" class="col-fk">🔗 donor_id</text><text x="268" y="99" class="col-type">VARCHAR(36) (FK)</text>
+    <text x="12" y="21" fill="#ffffff" font-size="13px" font-weight="700" font-family="Arial, sans-serif">request_notified</text>
+    <text x="268" y="21" fill="#cbd5e1" font-size="10px" font-weight="600" text-anchor="end" font-family="Arial, sans-serif">JUNCTION</text>
+    <text x="12" y="55" fill="#fbbf24" font-size="11px" font-weight="700" font-family="Arial, sans-serif">[PK] id</text><text x="268" y="55" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">BIGINT AUTO</text>
+    <text x="12" y="77" fill="#38bdf8" font-size="11px" font-weight="600" font-family="Arial, sans-serif">[FK] request_id</text><text x="268" y="77" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(36) (FK)</text>
+    <text x="12" y="99" fill="#38bdf8" font-size="11px" font-weight="600" font-family="Arial, sans-serif">[FK] donor_id</text><text x="268" y="99" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(36) (FK)</text>
   </g>
 
   <!-- REQUEST_ACCEPTED -->
-  <g transform="translate(970, 600)" filter="url(#shadow)">
-    <rect width="280" height="110" fill="url(#cardGrad)" class="card-border"/>
+  <g transform="translate(970, 600)">
+    <rect width="280" height="110" rx="8" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.5"/>
     <rect width="280" height="32" rx="8" fill="url(#junctionGrad)"/>
-    <text x="12" y="21" class="table-hdr">request_accepted (phone revealed)</text>
-    <text x="268" y="21" class="table-tag" text-anchor="end">JUNCTION</text>
-    <text x="12" y="55" class="col-pk">🔑 id</text><text x="268" y="55" class="col-type">BIGINT AUTO</text>
-    <text x="12" y="77" class="col-fk">🔗 request_id</text><text x="268" y="77" class="col-type">VARCHAR(36) (FK)</text>
-    <text x="12" y="99" class="col-fk">🔗 donor_id</text><text x="268" y="99" class="col-type">VARCHAR(36) (FK)</text>
+    <text x="12" y="21" fill="#ffffff" font-size="13px" font-weight="700" font-family="Arial, sans-serif">request_accepted (phone revealed)</text>
+    <text x="268" y="21" fill="#cbd5e1" font-size="10px" font-weight="600" text-anchor="end" font-family="Arial, sans-serif">JUNCTION</text>
+    <text x="12" y="55" fill="#fbbf24" font-size="11px" font-weight="700" font-family="Arial, sans-serif">[PK] id</text><text x="268" y="55" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">BIGINT AUTO</text>
+    <text x="12" y="77" fill="#38bdf8" font-size="11px" font-weight="600" font-family="Arial, sans-serif">[FK] request_id</text><text x="268" y="77" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(36) (FK)</text>
+    <text x="12" y="99" fill="#38bdf8" font-size="11px" font-weight="600" font-family="Arial, sans-serif">[FK] donor_id</text><text x="268" y="99" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(36) (FK)</text>
   </g>
 
   <!-- REQUEST_DECLINED -->
-  <g transform="translate(970, 740)" filter="url(#shadow)">
-    <rect width="280" height="100" fill="url(#cardGrad)" class="card-border"/>
+  <g transform="translate(970, 740)">
+    <rect width="280" height="100" rx="8" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.5"/>
     <rect width="280" height="32" rx="8" fill="url(#junctionGrad)"/>
-    <text x="12" y="21" class="table-hdr">request_declined</text>
-    <text x="268" y="21" class="table-tag" text-anchor="end">JUNCTION</text>
-    <text x="12" y="55" class="col-pk">🔑 id</text><text x="268" y="55" class="col-type">BIGINT AUTO</text>
-    <text x="12" y="77" class="col-fk">🔗 request_id</text><text x="268" y="77" class="col-type">VARCHAR(36) (FK)</text>
-    <text x="12" y="95" class="col-fk">🔗 donor_id</text><text x="268" y="95" class="col-type">VARCHAR(36) (FK)</text>
+    <text x="12" y="21" fill="#ffffff" font-size="13px" font-weight="700" font-family="Arial, sans-serif">request_declined</text>
+    <text x="268" y="21" fill="#cbd5e1" font-size="10px" font-weight="600" text-anchor="end" font-family="Arial, sans-serif">JUNCTION</text>
+    <text x="12" y="55" fill="#fbbf24" font-size="11px" font-weight="700" font-family="Arial, sans-serif">[PK] id</text><text x="268" y="55" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">BIGINT AUTO</text>
+    <text x="12" y="77" fill="#38bdf8" font-size="11px" font-weight="600" font-family="Arial, sans-serif">[FK] request_id</text><text x="268" y="77" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(36) (FK)</text>
+    <text x="12" y="95" fill="#38bdf8" font-size="11px" font-weight="600" font-family="Arial, sans-serif">[FK] donor_id</text><text x="268" y="95" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(36) (FK)</text>
   </g>
 
   <!-- ============================================================== -->
-  <!-- 5. CAMPS, TRANSFERS & AUDIT (Right Side) -->
+  <!-- 5. CAMPS, TRANSFERS & AUDIT -->
   <!-- ============================================================== -->
 
   <!-- CAMPS -->
-  <g transform="translate(1290, 130)" filter="url(#shadow)">
-    <rect width="270" height="190" fill="url(#cardGrad)" class="card-border" stroke="#10b981"/>
+  <g transform="translate(1290, 130)">
+    <rect width="270" height="190" rx="8" fill="url(#cardGrad)" stroke="#10b981" stroke-width="1.5"/>
     <rect width="270" height="32" rx="8" fill="url(#lookupGrad)"/>
-    <text x="12" y="21" class="table-hdr">camps</text>
-    <text x="258" y="21" class="table-tag" text-anchor="end">DRIVE EVENT</text>
-    <text x="12" y="55" class="col-pk">🔑 id</text><text x="258" y="55" class="col-type">VARCHAR(36)</text>
-    <text x="12" y="77" class="col-reg">name</text><text x="258" y="77" class="col-type">VARCHAR(200)</text>
-    <text x="12" y="99" class="col-fk">🔗 organizer_hospital_id</text><text x="258" y="99" class="col-type">VARCHAR(36) (FK)</text>
-    <text x="12" y="121" class="col-fk">🔗 city</text><text x="258" y="121" class="col-type">VARCHAR(50) (FK)</text>
-    <text x="12" y="143" class="col-reg">date, address</text><text x="258" y="143" class="col-type">DATE, TEXT</text>
-    <text x="12" y="165" class="col-reg">target & collected units</text><text x="258" y="165" class="col-type">INT UNSIGNED</text>
+    <text x="12" y="21" fill="#ffffff" font-size="13px" font-weight="700" font-family="Arial, sans-serif">camps</text>
+    <text x="258" y="21" fill="#cbd5e1" font-size="10px" font-weight="600" text-anchor="end" font-family="Arial, sans-serif">DRIVE EVENT</text>
+    <text x="12" y="55" fill="#fbbf24" font-size="11px" font-weight="700" font-family="Arial, sans-serif">[PK] id</text><text x="258" y="55" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(36)</text>
+    <text x="12" y="77" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">name</text><text x="258" y="77" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(200)</text>
+    <text x="12" y="99" fill="#38bdf8" font-size="11px" font-weight="600" font-family="Arial, sans-serif">[FK] organizer_hospital_id</text><text x="258" y="99" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(36) (FK)</text>
+    <text x="12" y="121" fill="#38bdf8" font-size="11px" font-weight="600" font-family="Arial, sans-serif">[FK] city</text><text x="258" y="121" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(50) (FK)</text>
+    <text x="12" y="143" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">date, address</text><text x="258" y="143" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">DATE, TEXT</text>
+    <text x="12" y="165" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">target and collected units</text><text x="258" y="165" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">INT UNSIGNED</text>
   </g>
 
   <!-- CAMP_REGISTRATIONS -->
-  <g transform="translate(1290, 350)" filter="url(#shadow)">
-    <rect width="270" height="130" fill="url(#cardGrad)" class="card-border"/>
+  <g transform="translate(1290, 350)">
+    <rect width="270" height="130" rx="8" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.5"/>
     <rect width="270" height="32" rx="8" fill="url(#junctionGrad)"/>
-    <text x="12" y="21" class="table-hdr">camp_registrations</text>
-    <text x="258" y="21" class="table-tag" text-anchor="end">JUNCTION</text>
-    <text x="12" y="55" class="col-pk">🔑 id</text><text x="258" y="55" class="col-type">BIGINT AUTO</text>
-    <text x="12" y="77" class="col-fk">🔗 camp_id</text><text x="258" y="77" class="col-type">VARCHAR(36) (FK)</text>
-    <text x="12" y="99" class="col-fk">🔗 donor_id</text><text x="258" y="99" class="col-type">VARCHAR(36) (FK)</text>
-    <text x="12" y="121" class="col-reg">registered_at, time_slot</text><text x="258" y="121" class="col-type">DATETIME</text>
+    <text x="12" y="21" fill="#ffffff" font-size="13px" font-weight="700" font-family="Arial, sans-serif">camp_registrations</text>
+    <text x="258" y="21" fill="#cbd5e1" font-size="10px" font-weight="600" text-anchor="end" font-family="Arial, sans-serif">JUNCTION</text>
+    <text x="12" y="55" fill="#fbbf24" font-size="11px" font-weight="700" font-family="Arial, sans-serif">[PK] id</text><text x="258" y="55" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">BIGINT AUTO</text>
+    <text x="12" y="77" fill="#38bdf8" font-size="11px" font-weight="600" font-family="Arial, sans-serif">[FK] camp_id</text><text x="258" y="77" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(36) (FK)</text>
+    <text x="12" y="99" fill="#38bdf8" font-size="11px" font-weight="600" font-family="Arial, sans-serif">[FK] donor_id</text><text x="258" y="99" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(36) (FK)</text>
+    <text x="12" y="121" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">registered_at, time_slot</text><text x="258" y="121" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">DATETIME</text>
   </g>
 
   <!-- TRANSFERS -->
-  <g transform="translate(1290, 510)" filter="url(#shadow)">
-    <rect width="270" height="190" fill="url(#cardGrad)" class="card-border" stroke="#a855f7"/>
+  <g transform="translate(1290, 510)">
+    <rect width="270" height="190" rx="8" fill="url(#cardGrad)" stroke="#a855f7" stroke-width="1.5"/>
     <rect width="270" height="32" rx="8" fill="url(#logGrad)"/>
-    <text x="12" y="21" class="table-hdr">transfers (inter-hospital)</text>
-    <text x="258" y="21" class="table-tag" text-anchor="end">ACID TRANSACTION</text>
-    <text x="12" y="55" class="col-pk">🔑 id</text><text x="258" y="55" class="col-type">VARCHAR(36)</text>
-    <text x="12" y="77" class="col-fk">🔗 source_hospital_id</text><text x="258" y="77" class="col-type">VARCHAR(36) (FK)</text>
-    <text x="12" y="99" class="col-fk">🔗 dest_hospital_id</text><text x="258" y="99" class="col-type">VARCHAR(36) (FK)</text>
-    <text x="12" y="121" class="col-fk">🔗 unit_id</text><text x="258" y="121" class="col-type">VARCHAR(36) (FK)</text>
-    <text x="12" y="143" class="col-reg">status</text><text x="258" y="143" class="col-type">ENUM('REQ','COMP')</text>
-    <text x="12" y="165" class="col-reg">requested_at, completed_at</text><text x="258" y="165" class="col-type">DATETIME</text>
-    <text x="12" y="184" fill="#c084fc" font-size="9px">⚡ sp_interhospital_transfer</text>
+    <text x="12" y="21" fill="#ffffff" font-size="13px" font-weight="700" font-family="Arial, sans-serif">transfers (inter-hospital)</text>
+    <text x="258" y="21" fill="#cbd5e1" font-size="10px" font-weight="600" text-anchor="end" font-family="Arial, sans-serif">ACID TRANSACTION</text>
+    <text x="12" y="55" fill="#fbbf24" font-size="11px" font-weight="700" font-family="Arial, sans-serif">[PK] id</text><text x="258" y="55" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(36)</text>
+    <text x="12" y="77" fill="#38bdf8" font-size="11px" font-weight="600" font-family="Arial, sans-serif">[FK] source_hospital_id</text><text x="258" y="77" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(36) (FK)</text>
+    <text x="12" y="99" fill="#38bdf8" font-size="11px" font-weight="600" font-family="Arial, sans-serif">[FK] dest_hospital_id</text><text x="258" y="99" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(36) (FK)</text>
+    <text x="12" y="121" fill="#38bdf8" font-size="11px" font-weight="600" font-family="Arial, sans-serif">[FK] unit_id</text><text x="258" y="121" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(36) (FK)</text>
+    <text x="12" y="143" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">status</text><text x="258" y="143" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">ENUM('REQ','COMP')</text>
+    <text x="12" y="165" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">requested_at, completed_at</text><text x="258" y="165" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">DATETIME</text>
+    <text x="12" y="184" fill="#c084fc" font-size="9px" font-family="Arial, sans-serif">sp_interhospital_transfer</text>
   </g>
 
   <!-- AUDIT_LOGS -->
-  <g transform="translate(1290, 730)" filter="url(#shadow)">
-    <rect width="270" height="190" fill="url(#cardGrad)" class="card-border" stroke="#6366f1"/>
+  <g transform="translate(1290, 730)">
+    <rect width="270" height="190" rx="8" fill="url(#cardGrad)" stroke="#6366f1" stroke-width="1.5"/>
     <rect width="270" height="32" rx="8" fill="url(#logGrad)"/>
-    <text x="12" y="21" class="table-hdr">audit_logs</text>
-    <text x="258" y="21" class="table-tag" text-anchor="end">SYSTEM AUDIT</text>
-    <text x="12" y="55" class="col-pk">🔑 id</text><text x="258" y="55" class="col-type">BIGINT AUTO</text>
-    <text x="12" y="77" class="col-reg">entity, entity_id</text><text x="258" y="77" class="col-type">VARCHAR(50)</text>
-    <text x="12" y="99" class="col-reg">action</text><text x="258" y="99" class="col-type">VARCHAR(40)</text>
-    <text x="12" y="121" class="col-reg">performed_by, role</text><text x="258" y="121" class="col-type">VARCHAR, ENUM</text>
-    <text x="12" y="143" class="col-reg">detail</text><text x="258" y="143" class="col-type">TEXT</text>
-    <text x="12" y="165" class="col-reg">created_at</text><text x="258" y="165" class="col-type">DATETIME</text>
-    <text x="12" y="184" fill="#818cf8" font-size="9px">⚡ Automated Triggers & Actions</text>
+    <text x="12" y="21" fill="#ffffff" font-size="13px" font-weight="700" font-family="Arial, sans-serif">audit_logs</text>
+    <text x="258" y="21" fill="#cbd5e1" font-size="10px" font-weight="600" text-anchor="end" font-family="Arial, sans-serif">SYSTEM AUDIT</text>
+    <text x="12" y="55" fill="#fbbf24" font-size="11px" font-weight="700" font-family="Arial, sans-serif">[PK] id</text><text x="258" y="55" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">BIGINT AUTO</text>
+    <text x="12" y="77" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">entity, entity_id</text><text x="258" y="77" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(50)</text>
+    <text x="12" y="99" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">action</text><text x="258" y="99" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR(40)</text>
+    <text x="12" y="121" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">performed_by, role</text><text x="258" y="121" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">VARCHAR, ENUM</text>
+    <text x="12" y="143" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">detail</text><text x="258" y="143" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">TEXT</text>
+    <text x="12" y="165" fill="#e2e8f0" font-size="11px" font-family="Arial, sans-serif">created_at</text><text x="258" y="165" fill="#64748b" font-size="10px" text-anchor="end" font-family="monospace">DATETIME</text>
+    <text x="12" y="184" fill="#818cf8" font-size="9px" font-family="Arial, sans-serif">Automated Triggers and Actions</text>
   </g>
 
   <!-- ============================================================== -->
   <!-- 6. BOTTOM LEGEND & DBMS FEATURES -->
   <!-- ============================================================== -->
   <g transform="translate(40, 950)">
-    <rect width="1520" height="160" rx="8" fill="#131d2e" stroke="#334155" stroke-width="1.5" filter="url(#shadow)"/>
+    <rect width="1520" height="160" rx="8" fill="#131d2e" stroke="#334155" stroke-width="1.5"/>
+    <text x="30" y="32" font-size="16px" font-weight="800" fill="#f87171" font-family="Arial, sans-serif">KEY DBMS CONCEPTS DEMONSTRATED IN THIS SCHEMA</text>
     
-    <text x="30" y="32" font-size="16px" font-weight="800" fill="#f87171">KEY DBMS CONCEPTS DEMONSTRATED IN THIS SCHEMA</text>
-    
-    <!-- Legend Items -->
     <circle cx="35" cy="62" r="5" fill="#fbbf24"/>
-    <text x="48" y="66" fill="#e2e8f0" font-size="12px"><b>Primary Key (PK)</b>: Unique identifier, B-Tree indexed</text>
+    <text x="48" y="66" fill="#e2e8f0" font-size="12px" font-family="Arial, sans-serif">[PK] Primary Key: Unique identifier, B-Tree indexed</text>
 
     <circle cx="35" cy="90" r="5" fill="#38bdf8"/>
-    <text x="48" y="94" fill="#e2e8f0" font-size="12px"><b>Foreign Key (FK)</b>: ON UPDATE CASCADE, ON DELETE RESTRICT / CASCADE / SET NULL</text>
+    <text x="48" y="94" fill="#e2e8f0" font-size="12px" font-family="Arial, sans-serif">[FK] Foreign Key: ON UPDATE CASCADE, ON DELETE RESTRICT / CASCADE / SET NULL</text>
 
     <circle cx="35" cy="118" r="5" fill="#34d399"/>
-    <text x="48" y="122" fill="#e2e8f0" font-size="12px"><b>Clinical Cooldown Trigger</b>: trg_check_donation_cooldown raises SIGNAL SQLSTATE '45000' if &lt;90 days</text>
+    <text x="48" y="122" fill="#e2e8f0" font-size="12px" font-family="Arial, sans-serif">Clinical Cooldown Trigger: trg_check_donation_cooldown raises SIGNAL SQLSTATE 45000 if &lt;90 days</text>
 
     <circle cx="560" cy="62" r="5" fill="#a855f7"/>
-    <text x="573" y="66" fill="#e2e8f0" font-size="12px"><b>ACID Transaction Procedure</b>: sp_interhospital_transfer with START TRANSACTION, COMMIT &amp; ROLLBACK</text>
+    <text x="573" y="66" fill="#e2e8f0" font-size="12px" font-family="Arial, sans-serif">ACID Transaction Procedure: sp_interhospital_transfer with START TRANSACTION, COMMIT and ROLLBACK</text>
 
     <circle cx="560" cy="90" r="5" fill="#f59e0b"/>
-    <text x="573" y="94" fill="#e2e8f0" font-size="12px"><b>Emergency Matching Procedure</b>: sp_match_emergency_donors ranks EXACT vs COMPATIBLE ABO/Rh groups</text>
+    <text x="573" y="94" fill="#e2e8f0" font-size="12px" font-family="Arial, sans-serif">Emergency Matching Procedure: sp_match_emergency_donors ranks EXACT vs COMPATIBLE ABO/Rh groups</text>
 
     <circle cx="560" cy="118" r="5" fill="#e11d48"/>
-    <text x="573" y="122" fill="#e2e8f0" font-size="12px"><b>3NF / BCNF Normalization</b>: Zero transitive dependencies, city coordinates and blood groups isolated</text>
+    <text x="573" y="122" fill="#e2e8f0" font-size="12px" font-family="Arial, sans-serif">3NF / BCNF Normalization: Zero transitive dependencies, city coordinates and blood groups isolated</text>
 
     <circle cx="1150" cy="62" r="5" fill="#60a5fa"/>
-    <text x="1163" y="66" fill="#e2e8f0" font-size="12px"><b>View 1</b>: v_blood_stock_summary (Dynamic hospital inventory)</text>
+    <text x="1163" y="66" fill="#e2e8f0" font-size="12px" font-family="Arial, sans-serif">View 1: v_blood_stock_summary (Dynamic hospital inventory)</text>
 
     <circle cx="1150" cy="90" r="5" fill="#fb7185"/>
-    <text x="1163" y="94" fill="#e2e8f0" font-size="12px"><b>View 2</b>: v_donor_leaderboard (DENSE_RANK &amp; Bronze/Silver/Gold badges)</text>
+    <text x="1163" y="94" fill="#e2e8f0" font-size="12px" font-family="Arial, sans-serif">View 2: v_donor_leaderboard (DENSE_RANK and Bronze/Silver/Gold badges)</text>
 
     <circle cx="1150" cy="118" r="5" fill="#4ade80"/>
-    <text x="1163" y="122" fill="#e2e8f0" font-size="12px"><b>View 3</b>: v_eligible_donors (Active, available &amp; cooldown checked)</text>
+    <text x="1163" y="122" fill="#e2e8f0" font-size="12px" font-family="Arial, sans-serif">View 3: v_eligible_donors (Active, available and cooldown checked)</text>
   </g>
 
 </svg>
