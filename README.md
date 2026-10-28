@@ -5,455 +5,312 @@
 <br/>
 
 ![React](https://img.shields.io/badge/React-18-D62839?style=for-the-badge&logo=react&logoColor=white)
-![Vite](https://img.shields.io/badge/Vite-5-B71C2C?style=for-the-badge&logo=vite&logoColor=white)
+![NodeJS](https://img.shields.io/badge/Node.js-Express_5-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-8.0_(Aiven_Cloud)-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
 ![Tailwind](https://img.shields.io/badge/Tailwind-3-8E1422?style=for-the-badge&logo=tailwindcss&logoColor=white)
-![Router](https://img.shields.io/badge/React_Router-6-6B0F1A?style=for-the-badge&logo=reactrouter&logoColor=white)
-![Palette](https://img.shields.io/badge/Palette-Red_only-E63946?style=for-the-badge)
-![Mock Mode](https://img.shields.io/badge/Backend-Not_needed_(mock)-F26471?style=for-the-badge)
+![JWT](https://img.shields.io/badge/Auth-JWT_%2B_Bcrypt-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white)
+![DBMS](https://img.shields.io/badge/CS203-DBMS_Project_(SVNIT)-E63946?style=for-the-badge)
 
 ### 🩸 *Hospitals raise a request → we match compatible, eligible donors in the same city → donors respond → donations & stock stay in sync.*
 
-[**Quick start**](#-quick-start) · [**Demo logins**](#-demo-logins) · [**Flow**](#-how-it-works) · [**Features**](#-features-by-role) · [**Tech stack**](#-tech-stack) · [**API**](#-api-contract)
+[**Quick Start**](#-quick-start) · [**Live Credentials**](#-live-authentication-credentials) · [**DBMS Features**](#-advanced-rdbms-features) · [**Architecture**](#-full-stack-architecture) · [**API Endpoints**](#-rest-api-endpoints)
 
 </div>
 
 ---
 
-## 📖 Table of contents
+## 📖 Table of Contents
 
-- [Why RaktSetu?](#-why-raktsetu)
-- [Quick start](#-quick-start)
-- [Demo logins](#-demo-logins)
-- [How it works](#-how-it-works)
-- [Features by role](#-features-by-role)
-- [Smart matching](#-smart-matching-engine)
-- [Blood compatibility](#-blood-compatibility-built-in)
-- [Design system](#-design-system-red-only)
-- [Tech stack](#-tech-stack)
-- [Architecture](#-architecture)
-- [Project structure](#-project-structure)
-- [API contract](#-api-contract)
-- [Mock data](#-seeded-mock-data)
-- [Guided demo script](#-5-minute-demo-script)
-- [Accessibility & UX](#-accessibility--ux)
-- [Roadmap](#-roadmap)
+- [About RaktSetu](#-about-raktsetu)
+- [Quick Start & Setup](#-quick-start--setup)
+- [Live Authentication Credentials](#-live-authentication-credentials)
+- [System Architecture](#-system-architecture)
+- [Advanced RDBMS Features (CS203 Syllabus)](#-advanced-rdbms-features)
+  - [Relational Schema & Normalization (3NF / BCNF)](#1-relational-schema--normalization-3nf--bcnf)
+  - [Automated Triggers](#2-automated-triggers)
+  - [ACID Stored Procedures](#3-acid-stored-procedures)
+  - [Analytical Views](#4-analytical-views)
+- [REST API Endpoints](#-rest-api-endpoints)
+- [End-to-End Workflow & Demo Guide](#-end-to-end-workflow--demo-guide)
+- [Project Directory Structure](#-project-directory-structure)
 
 ---
 
-## 💡 Why RaktSetu?
+## 💡 About RaktSetu
 
-> *Rakt* = blood · *Setu* = bridge
+> *Rakt* = blood · *Setu* = bridge  
+> **Course:** CS203 Database Management Systems | SVNIT Surat
 
-In an emergency, families scramble across phone calls and WhatsApp groups to find blood. RaktSetu turns that chaos into a **60-second workflow**:
+In an emergency, finding compatible blood is often a chaotic process of phone calls and social media forwards. **RaktSetu** bridges this gap with a modern, full-stack relational platform connecting **Donors**, **Hospitals & Blood Banks**, and **System Administrators**:
 
-| 😰 Today | 🩸 With RaktSetu |
+| Problem Today | Solution with RaktSetu |
 |---|---|
-| Calling dozens of people | One request, instant city-wide match |
-| Unsure who is eligible | 90-day gap and group compatibility checked automatically |
-| Donor phone numbers spread everywhere | Numbers revealed **only after a donor accepts** |
-| Blood stock tracked on paper | Live inventory, thresholds, expiry alerts |
-| No visibility for admins | Dashboards, reports and a full audit trail |
+| Unverified donor lists & spam calls | Real-time ABO/Rh compatibility matching with city proximity |
+| Ineligible donations causing clinical risk | **90-day clinical cooldown** trigger enforced strictly by MySQL |
+| Donor privacy concerns | Donor phone numbers stay private until the donor explicitly accepts a request |
+| Hospital stockouts & expired units | Real-time inventory tracking, low-stock alerts, and auto-unit creation |
+| Lack of auditability | Automated trigger-driven audit trail (`audit_logs`) tracking all state changes |
 
 ---
 
-## 🚀 Quick start
+## 🚀 Quick Start & Setup
 
+### Prerequisites
+- [Node.js (v18+)](https://nodejs.org/)
+- Cloud or local MySQL instance (Aiven Cloud MySQL credentials configured in `.env`)
+
+### 1. Installation
+Clone the repository and install all dependencies:
 ```bash
-# 1. install
+git clone https://github.com/lavanyachoukiker8/RaktSetu.git
+cd RaktSetu
 npm install
-
-# 2. run (opens on http://localhost:5173)
-npm run dev
-
-# 3. production build
-npm run build && npm run preview
 ```
 
-> **No backend required.** With `VITE_API_URL` empty, the whole app runs on a built-in mock backend that persists to `localStorage`. To reset the demo data, clear site data for the page.
+### 2. Environment Configuration
+Verify your `.env` configuration file in the project root:
+```env
+# 1. Database Connection (Aiven Cloud MySQL)
+MYSQL_HOST=mysql-1151a67-raktsetu-web.d.aivencloud.com
+MYSQL_PORT=15435
+MYSQL_DATABASE=defaultdb
+MYSQL_USER=avnadmin
+MYSQL_PASSWORD=your_aiven_password
+DB_SSL=true
 
-<details>
-<summary><b>🔌 Connect a real backend</b></summary>
+# 2. JWT Secret Key for Session Authentication
+JWT_SECRET=raktsetu_super_secret_jwt_key_2026
 
+# 3. Frontend API Proxy URL
+VITE_API_URL=http://localhost:5000
+```
+
+### 3. Database Initialization & Migration (Optional)
+To run or re-seed the cloud database with full schemas, triggers, views, procedures, and seed records:
 ```bash
-cp .env.example .env
-# then edit .env
-VITE_API_URL=http://localhost:8080
+# Automated 1-click migrator to Aiven MySQL
+npm run db:migrate
+
+# Inspect table row counts and live records
+npm run db:view
 ```
 
-- Requests go to your server through Axios (token sent as `Authorization: Bearer …`).
-- Error bodies shaped `{ "message": "..." }` are shown as toasts.
-- If the server can't be reached at all, calls **fall back to mock data** automatically.
+### 4. Running the Application
 
-</details>
+Open two terminal windows:
 
----
+**Terminal 1 — Backend API Server:**
+```bash
+npm run server
+```
+*Starts the Express REST API server on `http://localhost:5000` with database connection pooling and health checks (`/api/health`).*
 
-## 🔑 Demo logins
-
-Pick a role on the login page. A **"fill demo credentials"** button does the typing for you.
-
-| Role | Username | Password | What you will see |
-|:---:|:---:|:---:|---|
-| 🩸 **Donor** | `donor` | `donor123` | Aarav Patel · Surat · O+ · eligible · 4 donations (Bronze, 1 away from Silver) · live incoming requests |
-| ⏳ **Donor (cooldown)** | `donor2` | `donor123` | Priya Shah · A+ · countdown ring: *"Eligible again in 23 days"* |
-| 🏥 **Hospital** | `hospital` | `hospital123` | Lifeline Multispeciality Hospital, Surat · low-stock B+ · units expiring soon · 4 requests in different states |
-| 🛡️ **Admin** | `admin` | `admin123` | KPIs, 4 red charts, a pending hospital to approve, audit log |
-
-> Every other seeded donor can log in with their **phone number** + `donor123`.
+**Terminal 2 — Frontend Application:**
+```bash
+npm run dev
+```
+*Starts the Vite development server on `http://localhost:5173`. Open this URL in your web browser.*
 
 ---
 
-## 🧭 How it works
+## 🔐 Live Authentication Credentials
 
-### The big picture
+The system features real password hashing with `bcrypt` (salt rounds: 10) and signed JWT tokens with 7-day expiration. You can either register new accounts or use existing seeded accounts:
+
+| Role | Sign In / Registration | Seed Credentials | Accessible Features |
+| :--- | :--- | :--- | :--- |
+| **Donor** | Click **"Become a donor"** (`/register/donor`) | **ID:** `9876543210` or `donor`<br>**Pass:** `donor123` | View nearby requests, accept/decline, badges & leaderboard, donation history, availability toggle, profile update |
+| **Hospital** | Click **"Register a hospital"** (`/register/hospital`) | **ID:** `bloodbank@civilsurat.gov.in` or `hospital`<br>**Pass:** `hospital123` | Create emergency requests, view smart donor matches, notify donors, record donations, manage stock & thresholds, inter-hospital transfers |
+| **Administrator** | Direct login | **ID:** `admin` or `admin@raktsetu.org`<br>**Pass:** `admin123` | System-wide dashboard, hospital approval/rejection, donor management, camp CRUD, audit trail inspections |
+
+---
+
+## 🏗️ System Architecture
 
 ```mermaid
 flowchart LR
-    classDef red fill:#D62839,stroke:#6B0F1A,color:#fff,stroke-width:2px
-    classDef soft fill:#FFE0E3,stroke:#B71C2C,color:#3D0810
-    classDef dark fill:#6B0F1A,stroke:#3D0810,color:#fff
+    subgraph Client ["Client Layer (Browser)"]
+        UI["React 18 SPA\n(Vite 5 + Tailwind CSS)"]
+    end
 
-    H[🏥 Hospital<br/>raises request]:::red --> M{{🧠 Matching engine}}:::dark
-    M -->|same city · compatible group<br/>available · 90-day gap OK| D[🩸 Eligible donors]:::soft
-    D -->|notified| R{Donor responds}:::dark
-    R -->|Accept| P[📞 Phone revealed<br/>to the hospital]:::red
-    R -->|Decline| X[Removed from list]:::soft
-    P --> DN[✍️ Donation recorded]:::red
-    DN --> S[(📦 Inventory +units)]:::dark
-    S --> F[✅ Fulfil request<br/>units deducted]:::red
-    F --> A[(📜 Audit log)]:::soft
-```
+    subgraph Server ["Backend Layer (Node.js)"]
+        ViteProxy["Vite Reverse Proxy (:5173)"]
+        Express["Express Server (:5000)\nserver.js"]
+        AuthMiddleware["JWT & Role Authorization"]
+    end
 
-### Request lifecycle
+    subgraph Database ["Database Layer (Aiven Cloud MySQL 8.0)"]
+        Pool["mysql2 Connection Pool (TLS)"]
+        Tables["16 Relational Tables\n(3NF / BCNF)"]
+        Triggers["Clinical & Audit Triggers"]
+        Procedures["Stored Procedures\n(ACID Transfers & Matching)"]
+        Views["Analytical Views"]
+    end
 
-```mermaid
-stateDiagram-v2
-    direction LR
-    [*] --> OPEN: Hospital creates request
-    OPEN --> PARTIAL: First donor accepts
-    PARTIAL --> FULFILLED: Fulfil from inventory
-    OPEN --> FULFILLED: Fulfil from inventory
-    OPEN --> CANCELLED: Cancel
-    PARTIAL --> CANCELLED: Cancel
-    FULFILLED --> [*]
-    CANCELLED --> [*]
-    note right of OPEN
-        CRITICAL requests
-        auto-notify all matches
-    end note
-```
-
-### Who talks to whom
-
-```mermaid
-sequenceDiagram
-    autonumber
-    actor Hosp as 🏥 Hospital
-    participant App as RaktSetu
-    actor Don as 🩸 Donor
-    actor Adm as 🛡️ Admin
-
-    Adm->>App: Approve hospital registration
-    Hosp->>App: Create request (B+, 2 units, CRITICAL)
-    App-->>Hosp: 7 matching donors found
-    App->>Don: Critical: auto-notify matches
-    Don->>App: Accept
-    App-->>Hosp: Reveal donor contact
-    Hosp->>App: Record donation (90-day rule checked)
-    App-->>Hosp: Inventory updated
-    Hosp->>App: Fulfil from inventory
-    App-->>Adm: Audit entry: OPEN → FULFILLED
-```
-
-### User journey map
-
-```mermaid
-journey
-    title Emergency to life saved
-    section Family in need
-      Opens RaktSetu: 5: Family
-      Raises emergency request (60s): 4: Family
-    section Donor
-      Gets matched and notified: 5: Donor
-      Accepts the request: 5: Donor
-      Donates and gets a certificate: 5: Donor
-    section Hospital
-      Sees matched donors: 5: Hospital
-      Records donation and fulfils: 5: Hospital
+    UI -->|"/api requests"| ViteProxy
+    ViteProxy -->|"Proxy pass"| Express
+    Express --> AuthMiddleware
+    AuthMiddleware --> Pool
+    Pool --> Tables
+    Tables --> Triggers
+    Tables --> Procedures
+    Tables --> Views
 ```
 
 ---
 
-## ✨ Features by role
+## 🎓 Advanced RDBMS Features
 
-<table>
-<tr>
-<td width="33%" valign="top">
+### 1. Relational Schema & Normalization (3NF / BCNF)
+The database schema ([`database/schema.sql`](database/schema.sql)) comprises **16 normalized tables**:
+- **Reference Tables:** `blood_groups` (with rarity flags), `cities` (with geo-coordinates for distance calculation), `roles`.
+- **Entities:** `users`, `donors`, `hospitals`, `units` (individual barcoded blood bags with expiration dates), `requests`, `donations`, `camps`.
+- **Junction & Audit Tables:** `inventory_thresholds` (composite primary key), `request_notified`, `request_accepted`, `request_declined`, `camp_registrations`, `transfers`, and `audit_logs`.
+- **Integrity Constraints:**
+  - Foreign keys with `ON UPDATE CASCADE` and `ON DELETE RESTRICT/SET NULL/CASCADE`.
+  - Domain constraints: `chk_donor_phone` (10-digit regex), `chk_donor_weight >= 45.0 kg`, `chk_unit_expiry > collected_at`, `chk_req_units BETWEEN 1 AND 10`.
 
-### 🌍 Public
-- **Home**: hero + quick search, live counters, 8-group stock tiles, how-it-works, compatibility chart, urgent requests, camps, testimonials, FAQ
-- **Find Blood**: filter by group, city, urgency · donor phones hidden
-- **Camps**: filter by city and date, details modal, register
-- **Stock**: hospital × blood-group table with low-stock flags
-- **About**: eligibility, process, myths vs facts
-- **Emergency request**: public form, 3 clicks from anywhere
-- 404 page, skeleton loaders, empty states, toasts everywhere
+### 2. Automated Triggers
+- **`trg_check_donation_cooldown` (BEFORE INSERT on `donations`):**
+  Clinically enforces the mandatory 90-day cooldown period. If a donor attempts to donate blood before 90 days have elapsed since their previous donation, the trigger raises an SQL exception:
+  ```sql
+  SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Clinical violation: Donor must wait 90 days between donations.';
+  ```
+- **`trg_check_donor_age` (BEFORE INSERT on `donors`):**
+  Validates that donor age calculated via `TIMESTAMPDIFF(YEAR, NEW.dob, CURDATE())` is strictly between 18 and 65 years.
+- **`trg_after_donation_completed` (AFTER INSERT on `donations`):**
+  Automatically updates the donor's `last_donation`, computes `next_eligible_date` (+90 days), increments `donation_count`, generates a unique barcode, and inserts a new unit bag into `units` with a 42-day whole blood shelf life.
+- **`trg_audit_request_status` & `trg_audit_hospital_status`:**
+  Automatically logs any status changes into `audit_logs` for compliance and auditability.
 
-</td>
-<td width="33%" valign="top">
+### 3. ACID Stored Procedures
+- **`sp_interhospital_transfer`:**
+  Executes inter-hospital stock transfers within an explicit transaction block:
+  ```sql
+  START TRANSACTION;
+    UPDATE `units` SET `hospital_id` = p_dest_hospital_id WHERE `id` = p_unit_id;
+    INSERT INTO `transfers` (...) VALUES (...);
+  COMMIT;
+  ```
+  Guarantees atomicity and rolls back on `SQLEXCEPTION` if the unit is expired or already transferred.
+- **`sp_match_emergency_donors`:**
+  Evaluates recipient ABO/Rh compatibility, city location, active availability, and the 90-day cooldown, ranking exact matches first followed by elapsed days since last donation.
 
-### 🩸 Donor
-- **Overview**: circular eligibility countdown, availability toggle, totals, next-badge progress, latest request
-- **Incoming requests**: Accept / Decline with confirmation; phone shown **only after Accept**
-- **Donation history**: table + downloadable certificate
-- **Badges**: 🥉 Bronze (3) · 🥈 Silver (5) · 🥇 Gold (10) + leaderboard
-- **Profile**: edit details, preferred contact time, change password
-- **Camps**: register for upcoming drives
-
-</td>
-<td width="33%" valign="top">
-
-### 🏥 Hospital
-- **Overview**: open · critical · today's donations · low-stock alerts · expiring units
-- **Create request**: red urgency chips, validation, critical confirmation
-- **My requests**: filter, search, sort, paginate
-- **Request detail**: timeline, matched donors, Notify / Notify all, fulfil, cancel, **WhatsApp share**
-- **Inventory**: 8-group grid, editable thresholds, unit-level table
-- **Record donation**: donor search + server-style error toasts
-- **Transfers** and **Reports** (+ CSV export)
-
-</td>
-</tr>
-</table>
-
-### 🛡️ Admin
-
-| Tab | What you can do |
-|---|---|
-| **Dashboard** | KPI cards · stock by group (bar) · requests per month (line) · fulfilment rate (donut) · units by camp (bar) |
-| **Hospitals** | Verification status, **Approve / Reject**, add a hospital |
-| **Donors** | Search + filter by group, city, availability · view · deactivate · CSV export |
-| **Requests** | All requests with filters and a **status override** |
-| **Camps** | Create, edit, delete · see registrations and units collected |
-| **Reports** | Monthly summary · print · CSV export |
-| **Audit Log** | Who changed what and when, filterable by date and user |
+### 4. Analytical Views
+- **`v_blood_stock_summary`:**
+  Aggregates unit counts per blood group per hospital, checking `expiry > NOW()`, joined with `inventory_thresholds` to compute real-time stock flags (`ADEQUATE`, `LOW_STOCK`, `OUT_OF_STOCK`).
+- **`v_donor_leaderboard`:**
+  Ranks donors using `DENSE_RANK() OVER (ORDER BY donation_count DESC)` and dynamically awards badges (**Bronze** for 3+, **Silver** for 5+, **Gold** for 10+ donations).
+- **`v_eligible_donors`:**
+  Filters clinically eligible donors based on weight, age, and cooldown.
 
 ---
 
-## 🧠 Smart matching engine
+## 📡 REST API Endpoints
 
-A donor is matched to a request only if **all four** checks pass:
+All endpoints are hosted on `http://localhost:5000` and proxied through Vite:
 
-```mermaid
-flowchart TD
-    classDef ok fill:#FFE0E3,stroke:#B71C2C,color:#3D0810
-    classDef q fill:#D62839,stroke:#6B0F1A,color:#fff
-    S([New request]):::q --> C1{Same city?}:::q
-    C1 -- no --> N([Skipped]):::ok
-    C1 -- yes --> C2{Blood group compatible?}:::q
-    C2 -- no --> N
-    C2 -- yes --> C3{Marked available and active?}:::q
-    C3 -- no --> N
-    C3 -- yes --> C4{90+ days since last donation?}:::q
-    C4 -- no --> N
-    C4 -- yes --> M([✅ Matched]):::ok
-    M --> E{Same group as patient?}:::q
-    E -- yes --> EX[Exact match badge]:::ok
-    E -- no --> CP[Compatible badge]:::ok
+| Category | Method & Endpoint | Description | Access |
+| :--- | :--- | :--- | :--- |
+| **Auth** | `POST /api/auth/login` | Login with username, email, or 10-digit phone; returns JWT | Public |
+| **Auth** | `POST /api/donors/register` | Register new donor with health screening & password hash | Public |
+| **Auth** | `POST /api/hospitals/register` | Register new hospital awaiting verification | Public |
+| **Stats** | `GET /api/stats` | Summary counts (active donors, donations, open requests) | Public |
+| **Stats** | `GET /api/stats?detail=1` | Stock by blood group, 6-month trend, request statuses | Public |
+| **Donors** | `GET /api/donors` | Filter donors by group, city, availability, and search | Public |
+| **Donors** | `GET /api/donors/count` | Count available compatible donors in city | Public |
+| **Donors** | `GET /api/donors/leaderboard` | Top donors and badges from analytical view | Public |
+| **Donors** | `GET /api/donors/:id` | Detailed donor profile | Authenticated |
+| **Donors** | `PUT /api/donors/:id` | Update profile details | Donor / Admin |
+| **Donors** | `PUT /api/donors/:id/availability` | Toggle donation availability | Donor |
+| **Donors** | `PUT /api/donors/:id/active` | Activate / deactivate donor account | Admin |
+| **Requests** | `GET /api/requests` | List emergency requests with filter options | Public |
+| **Requests** | `POST /api/requests` | Create emergency blood request | Hospital / Public |
+| **Requests** | `GET /api/requests/:id/matches` | Execute `sp_match_emergency_donors` ranking | Hospital / Admin |
+| **Requests** | `POST /api/requests/:id/notify` | Notify matched donors | Hospital / Admin |
+| **Requests** | `POST /api/requests/:id/respond` | Accept or decline request (reveals phone on accept) | Donor |
+| **Requests** | `POST /api/requests/:id/fulfill` | Fulfill request & deduct units from inventory | Hospital / Admin |
+| **Requests** | `POST /api/requests/:id/cancel` | Cancel open emergency request | Hospital / Admin |
+| **Donations** | `POST /api/donations` | Record donation, check cooldown, trigger unit creation | Hospital |
+| **Inventory**| `GET /api/inventory` | Blood stock levels, thresholds & unit bag details | Public |
+| **Inventory**| `PUT /api/inventory/threshold` | Update hospital low-stock threshold | Hospital / Admin |
+| **Camps** | `GET /api/camps` | List blood donation camps with registration counts | Public |
+| **Camps** | `POST /api/camps/:id/register` | Donor registration for a donation drive | Donor |
+| **Transfers**| `GET /api/transfers` | View inter-hospital transfer history | Hospital / Admin |
+| **Transfers**| `POST /api/transfers` | Atomic transfer via `sp_interhospital_transfer` | Hospital / Admin |
+| **Reports** | `GET /api/reports/monthly` | Donations, requests, and top donor analytics | Hospital / Admin |
+| **Audit** | `GET /api/audit` | Comprehensive system audit log | Admin |
+| **Health** | `GET /api/health` | Server and database health check | Public |
+
+---
+
+## 🎯 End-to-End Workflow & Demo Guide
+
+During project viva / examination, follow this 3-minute sequence:
+
+1. **Demonstrate Public Portal & Live Stats**:
+   - Open `http://localhost:5173`. Point out real-time stats (Active Donors, Total Donations, Open Requests) powered by `GET /api/stats`.
+   - Use the **Find Blood** tool to check hospital blood availability in Surat or Ahmedabad.
+2. **Register a New Donor (Input Validation & Normalization)**:
+   - Click **Become a donor** and submit details with a valid 10-digit mobile number.
+   - Show how the donor record is created with hashed credentials and dynamic eligibility evaluation.
+3. **Emergency Blood Request & Stored Procedure Matching**:
+   - Log in as **Hospital** (`hospital` / `hospital123`).
+   - Create an emergency request for `B+` blood with `CRITICAL` urgency.
+   - Click **View Matches** to show the execution of `sp_match_emergency_donors`, highlighting the ranking of exact vs. compatible donors.
+   - Click **Notify All** to record notification timestamps in the database.
+4. **Donor Response (Privacy Guarantee)**:
+   - Log in as **Donor** (`donor` / `donor123`).
+   - View the pending request from the hospital.
+   - Click **Accept Request** — notice that the hospital contact details are now revealed.
+5. **Recording Donation & Trigger Execution**:
+   - Switch back to the hospital view and navigate to **Record Donation**.
+   - Record 1 unit for the donor.
+   - Demonstrate that the `trg_after_donation_completed` trigger updated the donor's `donation_count`, set the 90-day cooldown, and added a new barcoded unit into `units`.
+6. **Admin Dashboard & Audit Trail**:
+   - Log in as **Admin** (`admin` / `admin123`).
+   - Show the analytical charts (Stock by group, Monthly requests).
+   - Show the **Audit Log** to demonstrate that all state transitions were recorded automatically.
+
+---
+
+## 📁 Project Directory Structure
+
 ```
-
-Results are ranked **exact matches first**, then by longest time since last donation.
-
----
-
-## 🧬 Blood compatibility (built in)
-
-Who can donate to whom. This same table powers both the matching engine and the Home page chart.
-
-| Donor ↓ | A+ | A- | B+ | B- | AB+ | AB- | O+ | O- |
-|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| **O-** | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| **O+** | ✅ | · | ✅ | · | ✅ | · | ✅ | · |
-| **A-** | ✅ | ✅ | · | · | ✅ | ✅ | · | · |
-| **A+** | ✅ | · | · | · | ✅ | · | · | · |
-| **B-** | · | · | ✅ | ✅ | ✅ | ✅ | · | · |
-| **B+** | · | · | ✅ | · | ✅ | · | · | · |
-| **AB-** | · | · | · | · | ✅ | ✅ | · | · |
-| **AB+** | · | · | · | · | ✅ | · | · | · |
-
----
-
-## 🎨 Design system (red only)
-
-No blue, green, yellow or purple anywhere: the Tailwind theme itself removes every other hue, including charts and status chips.
-
-| Token | Hex | Token | Hex |
-|---|---|---|---|
-| `red-50` | `#FFF1F2` | `red-600` | `#D62839` |
-| `red-100` | `#FFE0E3` | `red-700` | `#B71C2C` |
-| `red-200` | `#FFC2C8` | `red-800` | `#8E1422` |
-| `red-300` | `#FF97A1` | `red-900` | `#6B0F1A` |
-| `red-400` | `#F26471` | `red-950` | `#3D0810` |
-| `red-500` | `#E63946` | | |
-
-**Meaning is never colour alone**: every chip carries an **icon + text label**.
-
-| Chip | Look | Icon |
-|---|---|---|
-| Urgency **Normal** | `red-100` bg, `red-800` text | 🕐 clock |
-| Urgency **Urgent** | `red-300` bg, `red-900` text | ⚠️ triangle |
-| Urgency **Critical** | solid `red-700`, white text, **pulsing** | 🛑 octagon |
-| Status **Open / Partial / Fulfilled / Cancelled** | graded reds, dashed outline for cancelled | ● ⏳ ✔ ✖ |
-
----
-
-## 🛠 Tech stack
-
-| Layer | Tools |
-|---|---|
-| **Framework** | ![React](https://img.shields.io/badge/React_18-D62839?logo=react&logoColor=white) ![Vite](https://img.shields.io/badge/Vite-B71C2C?logo=vite&logoColor=white) |
-| **Routing** | ![React Router](https://img.shields.io/badge/React_Router_v6-8E1422?logo=reactrouter&logoColor=white) role-protected routes |
-| **Styling** | ![Tailwind](https://img.shields.io/badge/Tailwind_CSS-6B0F1A?logo=tailwindcss&logoColor=white) custom red tokens, glass cards, reduced-motion support |
-| **Data** | ![Axios](https://img.shields.io/badge/Axios-E63946?logo=axios&logoColor=white) API layer + mock fallback |
-| **Forms** | ![RHF](https://img.shields.io/badge/React_Hook_Form-D62839?logo=reacthookform&logoColor=white) inline validation |
-| **Charts** | ![Recharts](https://img.shields.io/badge/Recharts-B71C2C) graded red shades |
-| **Icons & toasts** | `lucide-react` · `react-hot-toast` |
-| **State** | React Context (auth + role) · token in `localStorage` |
-
----
-
-## 🏗 Architecture
-
-```mermaid
-flowchart TB
-    classDef a fill:#D62839,stroke:#6B0F1A,color:#fff
-    classDef b fill:#FFE0E3,stroke:#B71C2C,color:#3D0810
-    classDef c fill:#6B0F1A,stroke:#3D0810,color:#fff
-
-    UI[Pages and Components<br/>public · donor · hospital · admin]:::a
-    CTX[AuthContext<br/>role + token]:::b
-    HOOK[useFetch · attempt<br/>loading and error toasts]:::b
-    API[src/api<br/>Axios client]:::a
-    REAL[(Real backend<br/>VITE_API_URL)]:::c
-    MOCK[(src/mock<br/>seed + in-browser API<br/>localStorage)]:::c
-
-    UI --> CTX
-    UI --> HOOK --> API
-    API -- configured and reachable --> REAL
-    API -- empty URL or network failure --> MOCK
+RaktSetu/
+├── api/                           # Serverless endpoint handlers
+│   ├── middleware/auth.js         # JWT verification & role authorization
+│   ├── auth.js                    # Auth endpoints (login, registration)
+│   ├── camps.js                   # Camps CRUD
+│   ├── db.js                      # MySQL connection pool (Aiven Cloud TLS)
+│   ├── donors.js                  # Donor profiles, eligibility, leaderboard
+│   ├── hospitals.js               # Hospital verification & profiles
+│   ├── requests.js                # Emergency requests & matching
+│   └── transfers.js               # Inter-hospital stock transfers
+├── certs/
+│   └── ca.pem                     # Aiven Cloud MySQL CA certificate
+├── database/                      # Relational DBMS scripts & tools
+│   ├── schema.sql                 # 16 tables, PK/FK constraints, check rules
+│   ├── reference-data.sql         # Blood groups, cities, roles
+│   ├── triggers_and_views.sql     # Cooldown triggers, audit triggers, views, procedures
+│   ├── seed.sql                   # Realistic donors, hospitals, units, requests
+│   ├── import_to_aiven.js         # Automated Aiven migration script
+│   ├── view_aiven.js              # Table row-count and sample viewer
+│   └── verify_database.sql        # Viva examination test suite
+├── src/                           # Frontend React 18 Application
+│   ├── api/                       # Axios HTTP client & API bindings
+│   ├── components/                # Reusable UI components (Tables, Charts, Forms)
+│   ├── context/                   # AuthContext with JWT persistence
+│   ├── pages/                     # Donor, Hospital, and Admin portals
+│   └── App.jsx                    # Route definitions
+├── server.js                      # Production Express backend server (:5000)
+├── vite.config.js                 # Vite configuration with /api reverse proxy
+├── package.json                   # Dependencies & npm scripts
+└── README.md                      # Comprehensive project documentation
 ```
-
-**Key idea:** every screen talks only to `src/api`. Swapping mock for a real backend needs no UI changes.
-
----
-
-## 📁 Project structure
-
-```text
-raktsetu/
-├── assets/banner.svg            ← animated README banner
-├── public/favicon.svg
-├── tailwind.config.js           ← red-only palette
-├── .env.example                 ← VITE_API_URL
-└── src/
-    ├── api/                     client.js (Axios + fallback) · index.js (all endpoints)
-    ├── mock/                    seed.js (data) · mockApi.js (in-browser backend)
-    ├── context/                 AuthContext.jsx (role + token)
-    ├── routes/                  AppRoutes.jsx · ProtectedRoute.jsx
-    ├── layouts/                 PublicLayout · DashboardLayout
-    ├── hooks/                   useFetch · useCountUp
-    ├── utils/                   constants · helpers · notify
-    ├── components/              Navbar · Sidebar · DataTable · Modal/ConfirmDialog
-    │                            Chips (BloodGroupBadge, UrgencyChip, StatusChip)
-    │                            Forms (FormInput, FormSelect, ToggleSwitch, Stepper)
-    │                            Widgets (StatCard, StockTile, Timeline, CountdownRing)
-    │                            Cards (RequestCard, CampCard, DonorCard) · StarterChart
-    │                            RequestForm · Feedback (Skeleton, EmptyState) · Footer · Logo
-    └── pages/
-        ├── Home · FindBlood · Camps · Stock · About · Emergency · NotFound
-        ├── Login · RegisterDonor (4 steps) · RegisterHospital
-        ├── donor/DonorPages.jsx
-        ├── hospital/HospitalPages.jsx
-        └── admin/AdminPages.jsx
-```
-
----
-
-## 🔌 API contract
-
-| Area | Endpoints |
-|---|---|
-| **Auth** | `POST /api/auth/login` · `POST /api/donors/register` · `POST /api/hospitals/register` |
-| **Donors** | `GET /api/donors/:id/eligibility` · `PUT /api/donors/:id/availability` |
-| **Requests** | `GET /api/requests?status=OPEN` · `POST /api/requests` · `GET /api/requests/:id` · `GET /api/requests/:id/matches` · `POST /api/requests/:id/notify` · `POST /api/requests/:id/fulfill` |
-| **Donations & stock** | `POST /api/donations` · `GET /api/inventory` |
-| **Camps** | `GET /api/camps` · `POST /api/camps` |
-| **Insights** | `GET /api/reports/monthly` · `GET /api/stats` · `GET /api/audit` |
-
-The UI also calls a few extra routes (donor responses, hospitals, transfers, thresholds, camp registration). They are all listed in [`src/api/index.js`](src/api/index.js).
-
-**Error format the UI understands:**
-
-```json
-{ "message": "Donor donated within last 90 days" }
-```
-
-It appears as a prominent toast, for example when recording a donation.
-
----
-
-## 🌱 Seeded mock data
-
-| Entity | Count | Notes |
-|---|:---:|---|
-| 🩸 Donors | **40** | Surat, Ahmedabad, Vadodara, Mumbai, Pune · all 8 groups |
-| 🏥 Hospitals | **8** | 7 approved, 1 pending (to try admin approval) |
-| 🚨 Requests | **12** | Every status and urgency |
-| 🏕 Camps | **6** | 4 upcoming, 2 completed |
-| 📦 Inventory | every hospital × group | Some low-stock, some expiring or expired |
-| 📜 History | per donor | Donations, transfers, audit entries |
-
----
-
-## 🎬 5-minute demo script
-
-1. **Public tour**: Home → Find Blood (filter `B+`, `Surat`) → Stock → Camps.
-2. **Raise an emergency**: click **Emergency Request** → CRITICAL, Surat. Matching donors are notified automatically.
-3. **Donor side**: log in as `donor` → **Incoming Requests** → **Accept** → the hospital phone is revealed only now.
-4. **Hospital side**: log in as `hospital` → **My Requests** → open a request → **Notify all** → **Fulfil from inventory**.
-5. **Break a rule on purpose**: **Record Donation** for `donor2` and watch the *"donated within last 90 days"* toast.
-6. **Admin**: log in as `admin` → approve *Andheri Hope Hospital* → review charts → open the **Audit Log**.
-
----
-
-## ♿ Accessibility & UX
-
-- ✅ Max **3 clicks** to raise a request or register
-- ✅ Mobile-first: tested layouts for **360px / 768px / 1280px**; dashboards switch to a **bottom nav** on phones
-- ✅ Semantic HTML, labelled inputs, `aria-label` on icon buttons, red focus rings
-- ✅ Status is **icon + text + intensity**, never colour alone
-- ✅ Light animation (hover lift, fade-in, pulsing CRITICAL chip) that respects `prefers-reduced-motion`
-- ✅ Inline validation: phone = 10 digits · age 18–65 from DOB · units 1–10 · required fields · submit disabled while loading · input preserved on error
-
----
-
-## 🗺 Roadmap
-
-- [ ] Real backend (Spring Boot / Node) behind the existing API layer
-- [ ] SMS / WhatsApp / push notifications for matched donors
-- [ ] Map view and real distance matching
-- [ ] Multi-language UI (Hindi, Gujarati, Marathi)
-- [ ] Automated tests and CI
 
 ---
 
 <div align="center">
-
-### 🩸 Donate blood, save lives.
-
-*Built as a bridge between those who can give and those who cannot wait.*
-
-<sub>Demo project · all data is fictional</sub>
-
+Made with ❤️ for <b>CS203 DBMS Course | SVNIT Surat</b>
 </div>
-
