@@ -125,6 +125,20 @@ The system features real password hashing with `bcrypt` (salt rounds: 10) and si
 
 ---
 
+## 🗺️ Relational Entity-Relationship (ER) Diagram
+
+<div align="center">
+  <img src="assets/er_diagram.svg" alt="RaktSetu Complete ER Diagram" width="100%"/>
+</div>
+
+> **Schema Details:**
+> - **16 Normalized Relational Tables** strictly in 3NF / BCNF.
+> - **Primary Keys (🔑)** and **Foreign Keys (🔗)** with explicit `ON UPDATE CASCADE` and `ON DELETE RESTRICT / SET NULL / CASCADE`.
+> - **Domain Constraints:** 10-digit mobile number regex (`chk_donor_phone`), minimum weight $\ge 45\text{ kg}$ (`chk_donor_weight`), blood unit expiry (`chk_unit_expiry > collected_at`), request units range (`chk_req_units BETWEEN 1 AND 10`).
+> - **Junction Tables:** `inventory_thresholds` (composite PK `hospital_id, blood_group`), `camp_registrations`, `request_notified`, `request_accepted`, and `request_declined`.
+
+---
+
 ## 🏗️ System Architecture
 
 ```mermaid
