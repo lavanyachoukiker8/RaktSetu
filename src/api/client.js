@@ -1,8 +1,9 @@
 import axios from 'axios';
 
+// When running with Vite proxy or configured backend URL
 const baseURL = import.meta.env.VITE_API_URL || '';
 
-export const http = axios.create({ baseURL, timeout: 8000 });
+export const http = axios.create({ baseURL, timeout: 10000 });
 
 http.interceptors.request.use((config) => {
   const token = localStorage.getItem('rs_token');
@@ -11,17 +12,23 @@ http.interceptors.request.use((config) => {
 });
 
 /**
- * Call the real backend if VITE_API_URL is set; otherwise (or if the server
- * can't be reached at all) run the mock implementation so the app works standalone.
- * Server error responses ({ message }) are re-thrown so the UI can toast them.
+ * Execute real API calls to the MySQL backend.
+ * Re-throws server error responses so that UI toasts display proper validation/auth messages.
  */
-export async function call(config, mockFn) {
-  if (!baseURL) throw new Error('VITE_API_URL is not set – backend unavailable');
+export async function call(config, fallbackFn) {
   try {
     const res = await http(config);
     return res.data;
   } catch (e) {
-    if (!e.response) return mockFn(); // network failure → fall back to mock data
+    if (e.response) {
+      // Real backend responded with an error (e.g. 400, 401, 403, 409)
+      throw e;
+    }
+    // If backend is completely unreachable and a fallback is provided, use it
+    if (fallbackFn) {
+      console.warn('Backend server unreachable; using fallback:', e.message);
+      return fallbackFn();
+    }
     throw e;
   }
 }
