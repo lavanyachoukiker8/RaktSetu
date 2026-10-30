@@ -5,8 +5,8 @@ import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 
-import pool from './api/db.js';
-import { verifyToken, optionalToken, requireRole } from './api/middleware/auth.js';
+import pool from './backend/db.js';
+import { verifyToken, optionalToken, requireRole } from './backend/middleware/auth.js';
 import { BLOOD_GROUPS, CITIES, MIN_GAP_DAYS, DEFAULT_THRESHOLD, donorGroupsFor } from './src/utils/constants.js';
 import { ageFromDob, daysSince } from './src/utils/helpers.js';
 import bcrypt from 'bcrypt';
