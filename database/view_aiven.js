@@ -1,7 +1,7 @@
 // database/view_aiven.js
 // Inspects the live Aiven database and displays all tables, row counts, and sample data.
 
-import pool from '../api/db.js';
+import pool from '../backend/db.js';
 
 async function inspectAiven() {
   console.log('========================================================');

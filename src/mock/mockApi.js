@@ -71,16 +71,27 @@ export const mock = {
   /* ---------------- Auth ---------------- */
   login: wrap(({ identifier, password, role }) => {
     const id = String(identifier || '').trim().toLowerCase();
-    const u = db.users.find(
-      (x) =>
-        x.role === role &&
-        (String(x.username).toLowerCase() === id || x.phone === id || (x.email && x.email.toLowerCase() === id))
-    );
+    const u = db.users.find((x) => {
+      if (x.role !== role) return false;
+      const d = x.donorId ? donor(x.donorId) : null;
+      const h = x.hospitalId ? hospital(x.hospitalId) : null;
+      const donorName = (d?.name || x.name || '').toLowerCase().trim();
+      const donorFirstName = donorName.split(/\s+/)[0];
+      const hospitalName = (h?.name || '').toLowerCase().trim();
+
+      return (
+        String(x.username || '').toLowerCase().trim() === id ||
+        String(x.phone || '').trim() === id ||
+        (x.email && x.email.toLowerCase().trim() === id) ||
+        (donorName && (donorName === id || donorFirstName === id)) ||
+        (hospitalName && hospitalName === id)
+      );
+    });
     if (!u || u.password !== password) fail('Invalid username or password for the selected role.', 401);
     if (role === 'donor') {
-      const d = donor(u.donorId);
+      const d = donor(u.donorId) || { id: u.donorId || 'D0', name: u.name || u.username || 'Donor', city: 'Surat', active: true };
       if (!d?.active) fail('This donor account has been deactivated. Please contact support.', 403);
-      return { token: `mock-${u.donorId}-${Date.now()}`, user: { id: d.id, role, name: d.name, donorId: d.id, city: d.city } };
+      return { token: `mock-${d.id}-${Date.now()}`, user: { id: d.id, role, name: d.name, donorId: d.id, city: d.city || 'Surat' } };
     }
     if (role === 'hospital') {
       const h = hospital(u.hospitalId);
@@ -103,7 +114,15 @@ export const mock = {
       preferredTime: 'Anytime', lastDonation: null, createdAt: new Date().toISOString(),
     };
     db.donors.push(d);
-    db.users.push({ username: p.phone, phone: p.phone, password: p.password, role: 'donor', donorId: id });
+    db.users.push({
+      username: p.name || p.phone,
+      name: p.name,
+      phone: p.phone,
+      email: p.email || '',
+      password: p.password,
+      role: 'donor',
+      donorId: id,
+    });
     log(p.name, 'donor', 'REGISTER_DONOR', `Donor ${id}`, `${p.group} · ${p.city}`);
     save();
     return { token: `mock-${id}-${Date.now()}`, user: { id, role: 'donor', name: d.name, donorId: id, city: d.city } };

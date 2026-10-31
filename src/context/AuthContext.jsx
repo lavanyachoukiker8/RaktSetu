@@ -19,6 +19,9 @@ export function AuthProvider({ children }) {
   const [auth, setAuth] = useState(read);
 
   const persist = useCallback((res) => {
+    if (!res || !res.token) {
+      throw new Error(res?.message || 'Authentication failed. Please verify your credentials or server connection.');
+    }
     localStorage.setItem('rs_token', res.token);
     localStorage.setItem('rs_user', JSON.stringify(res.user));
     setAuth({ token: res.token, user: res.user });

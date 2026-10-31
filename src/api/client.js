@@ -27,7 +27,11 @@ export async function call(config, fallbackFn) {
     // If backend is completely unreachable and a fallback is provided, use it
     if (fallbackFn) {
       console.warn('Backend server unreachable; using fallback:', e.message);
-      return fallbackFn();
+      const fallbackResult = await fallbackFn();
+      if (fallbackResult !== null && fallbackResult !== undefined) {
+        return fallbackResult;
+      }
+      throw new Error('Server unreachable. Please verify that the backend is running.');
     }
     throw e;
   }

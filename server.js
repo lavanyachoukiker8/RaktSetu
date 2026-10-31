@@ -72,8 +72,10 @@ app.post('/api/auth/login', async (req, res) => {
       `SELECT u.id, u.username, u.email, u.phone, u.password_hash, u.role_id, u.donor_id, u.hospital_id, r.name AS role_name
        FROM users u
        JOIN roles r ON u.role_id = r.id
-       WHERE (LOWER(u.username) = ? OR LOWER(u.email) = ? OR u.phone = ?)`,
-      [cleanId, cleanId, cleanId]
+       LEFT JOIN donors d ON u.donor_id = d.id
+       LEFT JOIN hospitals h ON u.hospital_id = h.id
+       WHERE (LOWER(u.username) = ? OR LOWER(COALESCE(u.email, '')) = ? OR u.phone = ? OR LOWER(COALESCE(d.name, '')) = ? OR LOWER(SUBSTRING_INDEX(COALESCE(d.name, ''), ' ', 1)) = ? OR LOWER(COALESCE(h.name, '')) = ?)`,
+      [cleanId, cleanId, cleanId, cleanId, cleanId, cleanId]
     );
 
     if (!users.length) {
