@@ -1956,7 +1956,7 @@ app.get('/api/health', async (req, res) => {
 });
 
 // Start Express Server
-if (process.env.NODE_ENV !== 'test') {
+if (process.env.NODE_ENV !== 'test' && !process.env.VERCEL) {
   app.listen(PORT, () => {
     console.log(`====================================================`);
     console.log(`🩸 RaktSetu Full Backend API Server`);
@@ -1967,3 +1967,4 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 export default app;
+
