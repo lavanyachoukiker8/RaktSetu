@@ -9,7 +9,8 @@ import pool from './backend/db.js';
 import { verifyToken, optionalToken, requireRole } from './backend/middleware/auth.js';
 import { BLOOD_GROUPS, CITIES, MIN_GAP_DAYS, DEFAULT_THRESHOLD, donorGroupsFor } from './src/utils/constants.js';
 import { ageFromDob, daysSince } from './src/utils/helpers.js';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 
 dotenv.config();
@@ -181,13 +182,21 @@ app.post('/api/donors/register', async (req, res) => {
       return res.status(400).json({ message: 'You must weigh at least 45 kg to donate' });
     }
 
-    // Check duplicate phone or email in users
-    const [existingUsers] = await pool.execute(
-      'SELECT id FROM users WHERE phone = ? OR (email IS NOT NULL AND email = ?)',
-      [phone, email || '']
-    );
-    if (existingUsers.length) {
-      return res.status(409).json({ message: 'This phone number or email is already registered' });
+    const cleanPhone = String(phone).trim();
+    const cleanEmail = email ? String(email).trim().toLowerCase() : null;
+
+    // Check duplicate phone or email in BOTH users and donors tables
+    let existingUsers = [];
+    let existingDonors = [];
+    if (cleanEmail) {
+      [existingUsers] = await pool.execute('SELECT id FROM users WHERE phone = ? OR email = ?', [cleanPhone, cleanEmail]);
+      [existingDonors] = await pool.execute('SELECT id FROM donors WHERE phone = ? OR email = ?', [cleanPhone, cleanEmail]);
+    } else {
+      [existingUsers] = await pool.execute('SELECT id FROM users WHERE phone = ?', [cleanPhone]);
+      [existingDonors] = await pool.execute('SELECT id FROM donors WHERE phone = ?', [cleanPhone]);
+    }
+    if (existingUsers.length || existingDonors.length) {
+      return res.status(409).json({ message: 'A donor with this phone number or email is already registered. Please log in.' });
     }
 
     // Format gender
@@ -200,20 +209,20 @@ app.post('/api/donors/register', async (req, res) => {
 
     // Get donor role_id
     const [roles] = await pool.execute("SELECT id FROM roles WHERE name = 'donor'");
-    const roleId = roles[0].id;
+    const roleId = roles && roles.length ? roles[0].id : 2;
 
     // Insert donor
     await pool.execute(
       `INSERT INTO donors (id, name, gender, dob, phone, email, blood_group, city, area, weight_kg, available, active, created_at)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, TRUE, NOW())`,
-      [donorId, name, g, dob, phone, email || null, group, city, area || null, weightNum, available !== false]
+      [donorId, name, g, dob, cleanPhone, cleanEmail, group, city, area || null, weightNum, available !== false]
     );
 
     // Insert user
     const [userResult] = await pool.execute(
       `INSERT INTO users (username, email, phone, password_hash, role_id, donor_id, created_at)
        VALUES (?, ?, ?, ?, ?, ?, NOW())`,
-      [phone, email || null, phone, passwordHash, roleId, donorId]
+      [cleanPhone, cleanEmail, cleanPhone, passwordHash, roleId, donorId]
     );
 
     await logAudit('donors', donorId, 'REGISTER', name, 'donor', `Donor registered in ${city}`);
@@ -230,7 +239,10 @@ app.post('/api/donors/register', async (req, res) => {
     });
   } catch (err) {
     console.error('Donor register error:', err);
-    return res.status(500).json({ message: 'Registration failed', error: err.message });
+    if (err.code === 'ER_DUP_ENTRY') {
+      return res.status(409).json({ message: 'This phone number or email is already registered. Please log in.' });
+    }
+    return res.status(500).json({ message: err.message || 'Registration failed' });
   }
 });
 
@@ -243,35 +255,42 @@ app.post('/api/hospitals/register', async (req, res) => {
       return res.status(400).json({ message: 'All fields are required' });
     }
 
-    if (!/^\d{10}$/.test(phone)) {
+    const cleanPhone = String(phone).trim();
+    if (!/^\d{10}$/.test(cleanPhone)) {
       return res.status(400).json({ message: 'Phone number must be exactly 10 digits' });
     }
 
-    // Check duplicate license or email
+    const cleanEmail = String(email).trim().toLowerCase();
+
+    // Check duplicate license, email, or phone in hospitals and users
     const [existing] = await pool.execute(
       'SELECT id FROM hospitals WHERE license = ? OR email = ? OR phone = ?',
-      [license, email, phone]
+      [license, cleanEmail, cleanPhone]
     );
-    if (existing.length) {
-      return res.status(409).json({ message: 'A hospital with this license, email, or phone is already registered' });
+    const [existingUsers] = await pool.execute(
+      'SELECT id FROM users WHERE email = ? OR phone = ? OR username = ?',
+      [cleanEmail, cleanPhone, cleanEmail]
+    );
+    if (existing.length || existingUsers.length) {
+      return res.status(409).json({ message: 'A hospital with this license, email, or phone is already registered.' });
     }
 
     const hospitalId = `hosp-${crypto.randomUUID().slice(0, 8)}`;
     const passwordHash = await bcrypt.hash(password, 10);
 
     const [roles] = await pool.execute("SELECT id FROM roles WHERE name = 'hospital'");
-    const roleId = roles[0].id;
+    const roleId = roles && roles.length ? roles[0].id : 3;
 
     await pool.execute(
       `INSERT INTO hospitals (id, name, city, address, status, license, phone, email, contact_person, created_at)
        VALUES (?, ?, ?, ?, 'PENDING', ?, ?, ?, ?, NOW())`,
-      [hospitalId, name, city, address, license, phone, email, contactPerson]
+      [hospitalId, name, city, address, license, cleanPhone, cleanEmail, contactPerson]
     );
 
     await pool.execute(
       `INSERT INTO users (username, email, phone, password_hash, role_id, hospital_id, created_at)
        VALUES (?, ?, ?, ?, ?, ?, NOW())`,
-      [email, email, phone, passwordHash, roleId, hospitalId]
+      [cleanEmail, cleanEmail, cleanPhone, passwordHash, roleId, hospitalId]
     );
 
     // Initialize default inventory thresholds
@@ -288,7 +307,10 @@ app.post('/api/hospitals/register', async (req, res) => {
     return res.status(201).json({ ok: true, id: hospitalId, message: 'Hospital submitted for admin approval' });
   } catch (err) {
     console.error('Hospital register error:', err);
-    return res.status(500).json({ message: 'Hospital registration failed', error: err.message });
+    if (err.code === 'ER_DUP_ENTRY') {
+      return res.status(409).json({ message: 'A hospital with this license, email, or phone is already registered.' });
+    }
+    return res.status(500).json({ message: err.message || 'Hospital registration failed' });
   }
 });
 
