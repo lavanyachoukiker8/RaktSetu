@@ -1,9 +1,20 @@
 import axios from 'axios';
 
-// When running with Vite proxy or configured backend URL
-const baseURL = import.meta.env.VITE_API_URL || '';
+// In production on Vercel or deployed domains:
+// API routes are on the same domain (/api/*). Never hardcode localhost in production builds.
+const rawUrl = (import.meta.env.VITE_API_URL || '').trim();
+const isLocalhost = rawUrl.includes('localhost') || rawUrl.includes('127.0.0.1');
 
-export const http = axios.create({ baseURL, timeout: 10000 });
+// If in production or if URL points to localhost, use relative '' so requests go to the deployed origin (/api/*)
+// Also strip any trailing '/api' because all endpoints in src/api/index.js already begin with '/api/'
+let baseURL = '';
+if (import.meta.env.PROD || isLocalhost) {
+  baseURL = isLocalhost ? '' : rawUrl.replace(/\/api\/?$/, '');
+} else {
+  baseURL = rawUrl.replace(/\/api\/?$/, '');
+}
+
+export const http = axios.create({ baseURL, timeout: 15000 });
 
 http.interceptors.request.use((config) => {
   const token = localStorage.getItem('rs_token');
