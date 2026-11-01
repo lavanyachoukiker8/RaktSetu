@@ -33,7 +33,7 @@ const AIVEN_FALLBACK = {
   host: 'mysql-1151a67-raktsetu-web.d.aivencloud.com',
   port: 15435,
   user: 'avnadmin',
-  password: Buffer.from('QVZOU19fX0hERXphanA5QVlNZ3NGTzIyYw==', 'base64').toString('utf8'),
+  password: Buffer.from('QVZOU19fX0hERXphajlBWU1nc0ZPMjJj', 'base64').toString('utf8'),
   database: 'defaultdb',
 };
 
